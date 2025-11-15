@@ -50,6 +50,7 @@ select choix in "${options[@]}"; do
             Setup-PrivilegeSeparationSanboxing
 
             Block-EmptyPassword
+            Set-LoginGraceTime
             ;;
         2)
             echo "..."

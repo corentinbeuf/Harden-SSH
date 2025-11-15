@@ -64,7 +64,7 @@ Each CA private key shall be protected by a unique and robust password.
 - [ ] Do not use a password for privileged accounts.
 - [ ] Do not use the PAM module 'pam_krb5'.
 - [x] Disable login without password.
-- [ ] Define a time period for the authentication operation
+- [x] Define a time period for the authentication operation.
 - [ ] Limit the number of connection attempts.
 - [ ] Disable the root connection in SSH.
 - [ ] Display information related to the user’s last login.

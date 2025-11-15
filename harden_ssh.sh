@@ -47,13 +47,13 @@ select choix in "${options[@]}"; do
             Setup-PermissionForPrivateKeys
             Setup-ProtectPrivateKeyUsingAESWithCBC
 
-            Block-RootConnection
-
             Setup-PrivilegeSeparationSanboxing
 
             Block-EmptyPassword
             Set-LoginGraceTime
             Set-MaxAuthTry
+            Block-RootConnection
+            Set-PrintLastLogon
             ;;
         2)
             echo "..."

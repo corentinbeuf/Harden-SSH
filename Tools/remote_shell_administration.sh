@@ -9,11 +9,11 @@ function Get-SSHPresence() {
         echo -e "${YELLOW}[Task R2] : SSH Server has intalled and is in running state.${NC}"
     fi
 
-    if ! systemctl is-active --quiet sshd &>/dev/null; then
+    if ! systemctl is-active --quiet ssh &>/dev/null; then
         systemctl start sshd
     fi
 
-    if ! systemctl is-enable --quiet sshd &>/dev/null; then
+    if ! systemctl is-enable --quiet ssh &>/dev/null; then
         systemctl enable sshd
     fi
 }

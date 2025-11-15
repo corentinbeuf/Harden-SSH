@@ -23,6 +23,7 @@ select choix in "${options[@]}"; do
             Setup-RSAKeySize
 
             Setup-PermissionForPrivateKeys
+            Setup-ProtectPrivateKeyUsingAESWithCBC
             ;;
         2)
             echo "..."

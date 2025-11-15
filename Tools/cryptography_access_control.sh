@@ -14,3 +14,13 @@ function Setup-PermissionForPrivateKeys ()
         fi
     done
 }
+
+function Setup-ProtectPrivateKeyUsingAESWithCBC ()
+{
+    if ! grep -Fxq "StrictModes yes" "/etc/ssh/sshd_config"; then
+        echo -e "${GREEN}[Task R14] : Private keys shall be password protected using AES128-CBC mode.${NC}"
+        sed -i "s/#StrictModes yes/StrictModes yes/g" /etc/ssh/sshd_config
+    else
+        echo -e "${YELLOW}[Task R14] : Private key has already protect using AES-CBC mode${NC}"
+    fi
+}

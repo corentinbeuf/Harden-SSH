@@ -6,10 +6,30 @@ source ./Tools/cryptography_key_generation.sh
 source ./Tools/cryptography_access_control.sh
 source ./Tools/system_hardening_privilege_separtion.sh
 
+function CheckRequirements ()
+{
+    if ! apt list --installed sudo &>/dev/null; then
+        echo -e "${RED} Sudo is not installed on the server, please install it !${NC}"
+        exit 1
+    fi
+
+    if [ "$(whoami)" = "root" ]; then
+        echo -e "${RED} You are logged in as root, please log in with a user with sudo rights !${NC}"
+        exit 1
+    fi
+
+    if ! groups "$USER" | grep -qw "sudo"; then
+        echo -e "${RED} You do not have sudo rights, please add sudo rights to this user. !${NC}"
+        exit 1
+    fi    
+}
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # Aucune couleur
+
+CheckRequirements
 
 PS3="Please select a task ? "
 options=("Configure all tasks" "Configure a specific task" "Quitter")

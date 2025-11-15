@@ -45,7 +45,7 @@ All the tasks performed in this script are based on the ANSSI guide, accessible 
 - [x] Except for duly justified needs, any flow forwarding feature shall be turned off:
     * in the SSH server configuration;
     * in the local firewall by blocking connections.
-- [ ] X11 forwarding shall be disabled on the server.
+- [x] X11 forwarding shall be disabled on the server.
 - [ ] It is recommended to create distinct CAs when their roles differ. There will be, for example:
     * one CA for the “hosts” CA role;
     * one CA for the “users” CA role.

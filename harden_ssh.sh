@@ -6,6 +6,9 @@ source ./Tools/Cryptography/key_generation.sh
 source ./Tools/Cryptography/access_control.sh
 source ./Tools/System-Hardening/privilege_separation.sh
 source ./Tools/Authentication-Access-Control/user_auth.sh
+source ./Tools/Authentication-Access-Control/access_accountability.sh
+source ./Tools/Authentication-Access-Control/restrictions_of_the_user_environment.sh
+source ./Tools/Protocole-Network-Access/listen-address-port.sh
 
 function CheckRequirements ()
 {

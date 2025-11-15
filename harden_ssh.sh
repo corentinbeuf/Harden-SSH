@@ -1,10 +1,10 @@
 #!/bin/bash
 
 source ./Tools/ssh_protocol.sh
-source ./Tools/cryptography_authentication.sh
-source ./Tools/cryptography_key_generation.sh
-source ./Tools/cryptography_access_control.sh
-source ./Tools/system_hardening_privilege_separtion.sh
+source ./Tools/Cryptography/authentication.sh
+source ./Tools/Cryptography/key_generation.sh
+source ./Tools/Cryptography/access_control.sh
+source ./Tools/System\ Hardening/privilege_separation.sh
 
 function CheckRequirements ()
 {

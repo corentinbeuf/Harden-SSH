@@ -19,3 +19,13 @@ function Set-LoginGraceTime ()
         echo -e "${YELLOW}[Task P10] : Login grace time is already setup${NC}"
     fi
 }
+
+function Set-MaxAuthTry ()
+{
+    if ! grep -Fxq "MaxAuthTries 2" "/etc/ssh/sshd_config"; then
+        echo -e "${GREEN}[Task P11] : Limit the number of connection attempts.${NC}"
+        sed -i "s/#MaxAuthTries 6/MaxAuthTries 2/g" /etc/ssh/sshd_config
+    else
+        echo -e "${YELLOW}[Task P11] : The maximum authentication test number is already configured${NC}"
+    fi
+}

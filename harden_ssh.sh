@@ -51,6 +51,7 @@ select choix in "${options[@]}"; do
 
             Block-EmptyPassword
             Set-LoginGraceTime
+            Set-MaxAuthTry
             ;;
         2)
             echo "..."

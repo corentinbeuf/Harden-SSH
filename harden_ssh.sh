@@ -1,8 +1,9 @@
 #!/bin/bash
 
-source ./Tools/ssh_protocol.sh 
-source ./Tools/cryptography_authentication.sh 
+source ./Tools/ssh_protocol.sh
+source ./Tools/cryptography_authentication.sh
 source ./Tools/cryptography_key_generation.sh
+source ./Tools/cryptography_access_control.sh
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -20,6 +21,8 @@ select choix in "${options[@]}"; do
             Setup-CheckAuthenticityServer
             Remove-AllDSAKey
             Setup-RSAKeySize
+
+            Setup-PermissionForPrivateKeys
             ;;
         2)
             echo "..."

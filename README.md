@@ -20,7 +20,7 @@ All the tasks performed in this script are based on the ANSSI guide, accessible 
     * keys must be generated on a physical equipment;
     * system must have several independent sources of entropy;
     * key generation shall occur only after a long period of activity (several minutes or even hours)
-- [ ] The private key should only be known by the entity who needs to prove its identity to a third party and possibly to a trusted authority. This private key should be properly protected in order to avoid its disclosure to any unauthorized person.
+- [x] The private key should only be known by the entity who needs to prove its identity to a third party and possibly to a trusted authority. This private key should be properly protected in order to avoid its disclosure to any unauthorized person.
 - [ ] Private keys shall be password protected using AES128-CBC mode.
 - [ ] The encryption algorithm shall either be AES128-CTR, AES192-CTR or AES256-CTR. The integrity mechanism shall rely on HMAC-SHA1, HMAC-SHA256 or HMACSHA512.
 - [ ] A preliminary step in hardening the sshd service is to use proper compilation flags.

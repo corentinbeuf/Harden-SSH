@@ -52,7 +52,7 @@ All the tasks performed in this script are based on the ANSSI guide, accessible 
   
 Each CA private key shall be protected by a unique and robust password.
 - [ ] If a key cannot be considered safe anymore, it shall be quickly revoked at the SSH level.
-- [ ] SSH host key fingerprints obtained through DNS records should not be trusted without complimentary verifications.
+- [x] SSH host key fingerprints obtained through DNS records should not be trusted without complimentary verifications.
 
 ### Personnal requirements
 - [ ] The lifetime of SSh keys must be a maximum of 3 years.

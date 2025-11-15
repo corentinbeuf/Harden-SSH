@@ -9,6 +9,7 @@ source ./Tools/Authentication-Access-Control/user_auth.sh
 source ./Tools/Authentication-Access-Control/access_accountability.sh
 source ./Tools/Authentication-Access-Control/restrictions_of_the_user_environment.sh
 source ./Tools/Protocole-Network-Access/listen-address-port.sh
+source ./Tools/Protocole-Network-Access/tcp-forwarding.sh
 
 function CheckRequirements ()
 {
@@ -53,6 +54,7 @@ select choix in "${options[@]}"; do
             Block-EnvironmentModification
 
             Set-SSHPort
+            Block-TCPForwarding
 
             Setup-PrivilegeSeparationSanboxing
 

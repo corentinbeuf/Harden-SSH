@@ -11,7 +11,7 @@ All the tasks performed in this script are based on the ANSSI guide, accessible 
 - [ ] SCP or SFTP shall be used instead of historical protocols (RCP, FTP) for file transfers.
 - [ ] The implementation of SSH tunnels shall only be applied to protocols that do not provide robust security mechanisms and that can benefit from it (for example: X11, VNC). This recommendation does not exempt from using additional low level security protocols, such as IPsec 2.
 - [x] The server authenticity shall always be checked prior to access. This is achieved through preliminary machine authentication by checking the server public key fingerprint, or by verifying the server certificate.
-- [ ] The use of DSA keys is not recommended.
+- [x] The use of DSA keys is not recommended.
 - [x] The minimum key size shall be 2048 bits for RSA.
 - [ ] The minimum key size shall be 256 bits for ECDSA.
 - [ ] ECDSA keys should be favoured over RSA keys when supported by SSH clients and servers.

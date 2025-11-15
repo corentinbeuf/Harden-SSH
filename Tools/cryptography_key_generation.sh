@@ -2,7 +2,7 @@
 
 function Remove-AllDSAKey ()
 {
-    dsa_client_files=$(find / -type f -name "*id_rsa*" -print 2>/dev/null);
+    dsa_client_files=$(find / -type f -name "*id_dsa*" -print 2>/dev/null);
     dsa_server_files=$(find / -type f -name "*ssh_host_dsa_key*" -print 2>/dev/null);
 
     #Client files

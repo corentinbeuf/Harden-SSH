@@ -4,6 +4,7 @@ source ./Tools/ssh_protocol.sh
 source ./Tools/cryptography_authentication.sh
 source ./Tools/cryptography_key_generation.sh
 source ./Tools/cryptography_access_control.sh
+source ./Tools/system_hardening_privilege_separtion.sh
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -24,6 +25,8 @@ select choix in "${options[@]}"; do
 
             Setup-PermissionForPrivateKeys
             Setup-ProtectPrivateKeyUsingAESWithCBC
+
+            Setup-PrivilegeSeparationSanboxing
             ;;
         2)
             echo "..."

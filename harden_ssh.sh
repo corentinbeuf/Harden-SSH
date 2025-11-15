@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source ./Tools/ssh_protocol.sh
+source ./Tools/remote_shell_administration.sh
 source ./Tools/Cryptography/authentication.sh
 source ./Tools/Cryptography/key_generation.sh
 source ./Tools/Cryptography/access_control.sh
@@ -46,6 +47,8 @@ select choix in "${options[@]}"; do
         1)
             Setup-SSHProtocol
 
+            Remove-OldProtocols
+            
             Setup-CheckAuthenticityServer
             Remove-AllDSAKey
             Setup-RSAKeySize

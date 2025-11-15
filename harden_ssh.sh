@@ -49,6 +49,8 @@ select choix in "${options[@]}"; do
 
             Block-EnvironmentModification
 
+            Set-SSHPort
+
             Setup-PrivilegeSeparationSanboxing
 
             Block-EmptyPassword

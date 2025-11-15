@@ -5,7 +5,7 @@ All the tasks performed in this script are based on the ANSSI guide, accessible 
 
 ## Hardening
 ### Requirements
-- [ ] Only version 2 of the SSH protocol shall be authorized.
+- [x] Only version 2 of the SSH protocol shall be authorized.
 - [ ] SSH shall be used instead of historical protocols (TELNET, RSH, RLOGIN) for remote shell access.
 - [ ] TELNET, RSH and RLOGIN remote access servers shall be uninstalled from the system.
 - [ ] SCP or SFTP shall be used instead of historical protocols (RCP, FTP) for file transfers.

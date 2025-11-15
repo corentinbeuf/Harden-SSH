@@ -10,6 +10,16 @@ function Setup-SSHProtocol ()
     fi
 }
 
+function Setup-CheckAuthenticityServer ()
+{
+    if ! grep -Fxq "StrictHostKeyChecking ask" "/etc/ssh/ssh_config"; then
+        echo -e "${GREEN}[Task R6] : The server authenticity shall always be checked prior to access. This is achieved through preliminary machine authentication by checking the server public key fingerprint, or by verifying the server certificate.${NC}"
+        sed -i "s/#   StrictHostKeyChecking ask/   StrictHostKeyChecking ask/g" /etc/ssh/ssh_config
+    else
+        echo -e "${YELLOW}SSH Protocol version already setup${NC}"
+    fi
+}
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
@@ -22,6 +32,8 @@ select choix in "${options[@]}"; do
     case $REPLY in
         1)
             Setup-SSHProtocol
+
+            Setup-CheckAuthenticityServer
             ;;
         2)
             echo "..."

@@ -4,7 +4,8 @@ source ./Tools/ssh_protocol.sh
 source ./Tools/Cryptography/authentication.sh
 source ./Tools/Cryptography/key_generation.sh
 source ./Tools/Cryptography/access_control.sh
-source ./Tools/System\ Hardening/privilege_separation.sh
+source ./Tools/System-Hardening/privilege_separation.sh
+source ./Tools/Authentication-Access-Control/user_auth.sh
 
 function CheckRequirements ()
 {
@@ -47,6 +48,8 @@ select choix in "${options[@]}"; do
             Setup-ProtectPrivateKeyUsingAESWithCBC
 
             Setup-PrivilegeSeparationSanboxing
+
+            Block-EmptyPassword
             ;;
         2)
             echo "..."

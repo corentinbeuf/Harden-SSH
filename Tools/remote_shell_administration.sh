@@ -13,7 +13,7 @@ function Get-SSHPresence() {
         systemctl start sshd
     fi
 
-    if ! systemctl is-enable --quiet ssh &>/dev/null; then
+    if ! systemctl is-enabled --quiet ssh &>/dev/null; then
         systemctl enable sshd
     fi
 }

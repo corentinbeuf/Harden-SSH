@@ -46,7 +46,7 @@ select choix in "${options[@]}"; do
     case $REPLY in
         1)
             Setup-SSHProtocol
-
+            Get-SSHPresence
             Remove-OldProtocols
             
             Setup-CheckAuthenticityServer

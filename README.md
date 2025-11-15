@@ -6,7 +6,7 @@ All the tasks performed in this script are based on the ANSSI guide, accessible 
 ## Hardening
 ### Requirements
 - [x] Only version 2 of the SSH protocol shall be authorized.
-- [ ] SSH shall be used instead of historical protocols (TELNET, RSH, RLOGIN) for remote shell access.
+- [x] SSH shall be used instead of historical protocols (TELNET, RSH, RLOGIN) for remote shell access.
 - [x] TELNET, RSH and RLOGIN remote access servers shall be uninstalled from the system.
 - [ ] SCP or SFTP shall be used instead of historical protocols (RCP, FTP) for file transfers.
 - [ ] The implementation of SSH tunnels shall only be applied to protocols that do not provide robust security mechanisms and that can benefit from it (for example: X11, VNC). This recommendation does not exempt from using additional low level security protocols, such as IPsec 2.

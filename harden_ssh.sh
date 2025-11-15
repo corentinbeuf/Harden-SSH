@@ -60,6 +60,8 @@ select choix in "${options[@]}"; do
             Block-X11Forwarding
             Block-X11Trusted
 
+            Setup-DNSValidation
+
             Setup-PrivilegeSeparationSanboxing
 
             Block-EmptyPassword

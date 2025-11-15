@@ -35,7 +35,7 @@ All the tasks performed in this script are based on the ANSSI guide, accessible 
 - [ ] The relay host server shall be a trusted host.
 - [ ] Every user must have his own, unique, non-transferable account.
 - [ ] Access to a service shall be restricted to users having a legitimate need. This restriction shall apply on a white-list basis: only explicitly allowed users shall connect to a host via SSH and possibly from specified source IP addresses.
-- [ ] The ability for a user to tamper with the environment shall be denied by default. Usersupplied environment variables shall be selected on a case-by-case basis.
+- [x] The ability for a user to tamper with the environment shall be denied by default. Usersupplied environment variables shall be selected on a case-by-case basis.
 - [ ] Users shall only execute strictly necessary commands. This restriction can be achieved in the following ways:
     * using the ForceCommand directive on a per user basis in the sshd_config file;
     * specifying some options in the authorized_keys file (See 4.3.1);

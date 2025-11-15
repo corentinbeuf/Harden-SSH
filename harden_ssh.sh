@@ -47,6 +47,8 @@ select choix in "${options[@]}"; do
             Setup-PermissionForPrivateKeys
             Setup-ProtectPrivateKeyUsingAESWithCBC
 
+            Block-EnvironmentModification
+
             Setup-PrivilegeSeparationSanboxing
 
             Block-EmptyPassword

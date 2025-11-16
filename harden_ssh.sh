@@ -12,6 +12,7 @@ source ./Tools/Authentication-Access-Control/restrictions_of_the_user_environmen
 source ./Tools/Protocole-Network-Access/listen-address-port.sh
 source ./Tools/Protocole-Network-Access/tcp-forwarding.sh
 source ./Tools/Protocole-Network-Access/x11-forwarding.sh
+source ./Tools/OpenSSH-PKI/revocation.sh
 source ./Tools/DNS-Record/dns-record.sh
 
 function CheckRequirements ()
@@ -63,6 +64,7 @@ select choix in "${options[@]}"; do
             Block-X11Forwarding
             Block-X11Trusted
 
+            Create-RevocationFile
             Setup-DNSValidation
 
             Setup-PrivilegeSeparationSanboxing

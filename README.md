@@ -51,7 +51,7 @@ All the tasks performed in this script are based on the ANSSI guide, accessible 
     * one CA for the “users” CA role.
   
 Each CA private key shall be protected by a unique and robust password.
-- [ ] If a key cannot be considered safe anymore, it shall be quickly revoked at the SSH level.
+- [x] If a key cannot be considered safe anymore, it shall be quickly revoked at the SSH level.
 - [x] SSH host key fingerprints obtained through DNS records should not be trusted without complimentary verifications.
 
 ### Personnal requirements

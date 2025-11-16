@@ -54,9 +54,9 @@ function Check-PasswordProtection ()
         [ -f "$key" ] || continue
         [[ "$key" == *.pub ]] && continue
         if ssh-keygen -y -f "$key" >/dev/null 2>&1; then
-            echo -e "${RED}[Task P3] : Key $key : Please generate new SSH key and setup a password${NC}"
-        else
             echo -e "${YELLOW}[Task P3] : Key $key : is protected with password${NC}"
+        else
+            echo -e "${RED}[Task P3] : Key $key : Please generate new SSH key and setup a password${NC}"
         fi
     done
 }

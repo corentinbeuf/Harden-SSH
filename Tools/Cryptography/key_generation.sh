@@ -42,9 +42,9 @@ function Check-ECDSAKeySize() {
         [ -f "$key" ] || continue
         key_size=$(ssh-keygen -lf "$key" | awk '{print $1}')
         if (( key_size < 256 )); then
-            echo "${RED}[Task R9] : Key $key is too small. Please generate new key with this command : ssh-keygen -t ecdsa -b 256"
+            echo -e "${RED}[Task R9] : Key $key is too small. Please generate new key with this command : ssh-keygen -t ecdsa -b 256"
         else
-            echo "${YELLOW}[Task R9] : The minimum size of the key '$key' is sufficient"
+            echo -e "${YELLOW}[Task R9] : The minimum size of the key '$key' is sufficient"
         fi
     done
 }

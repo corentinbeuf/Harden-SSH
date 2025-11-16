@@ -78,6 +78,7 @@ select choix in "${options[@]}"; do
             Setup-PrivilegeSeparationSanboxing #P5
             Setup-SFTPPermission #P6
 
+            Remove-PAMKrb5 #P8
             Block-EmptyPassword #P9
             Set-LoginGraceTime #P10
             Set-MaxAuthTry #P11

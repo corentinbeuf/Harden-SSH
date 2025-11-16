@@ -62,7 +62,7 @@ Each CA private key shall be protected by a unique and robust password.
 - [x] Implement the separation of privileges.
 - [x] Implement the principle of least privilege for users using SFTP only.
 - [ ] Do not use a password for privileged accounts.
-- [ ] Do not use the PAM module 'pam_krb5'.
+- [x] Do not use the PAM module 'pam_krb5'.
 - [x] Disable login without password.
 - [x] Define a time period for the authentication operation.
 - [x] Limit the number of connection attempts.

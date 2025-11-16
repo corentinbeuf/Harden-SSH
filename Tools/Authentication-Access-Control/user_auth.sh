@@ -1,5 +1,26 @@
 #!/bin/bash
 
+function Remove-PAMKrb5 ()
+{
+    if ! grep -Fxq "KerberosAuthentication no" "/etc/ssh/sshd_config"; then
+        echo -e "${GREEN}[Task P8] : Do not use the PAM module 'pam_krb5' - Kerberos.${NC}"
+        sed -i "s/#KerberosAuthentication no/KerberosAuthentication no/g" /etc/ssh/sshd_config
+    else
+        echo -e "${YELLOW}[Task P8] : pam_krb5 module is already disabled${NC}"
+    fi
+
+    if ! grep -Fxq "GSSAPIAuthentication yes" "/etc/ssh/sshd_config"; then
+        echo -e "${GREEN}[Task P8] : Do not use the PAM module 'pam_krb5' - GSSAPI.${NC}"
+        sed -i "s/#GSSAPIAuthentication no/GSSAPIAuthentication yes/g" /etc/ssh/sshd_config
+    else
+        echo -e "${YELLOW}[Task P8] : pam_krb5 module is already disabled${NC}"
+    fi
+
+    if grep -q pam_krb5 /etc/pam.d/sshd; then
+        echo -e "${RED}[Task P8] pam_krb5 detected in '/etc/pam.d/sshd'. Please remove it!${NC}"
+    fi
+}
+
 function Block-EmptyPassword ()
 {
     if ! grep -Fxq "PermitEmptyPasswords no" "/etc/ssh/sshd_config"; then

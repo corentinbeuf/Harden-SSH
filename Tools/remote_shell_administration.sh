@@ -40,3 +40,13 @@ function Remove-OldProtocols() {
         fi
     done
 }
+
+function Disable-SSHTunnels ()
+{
+    if ! grep -Fxq "PermitTunnel no" "/etc/ssh/sshd_config"; then
+        echo -e "${GREEN}[Task R5] : The implementation of SSH tunnels shall only be applied to protocols that do not provide robust security mechanisms and that can benefit from it (for example: X11, VNC). This recommendation does not exempt from using additional low level security protocols, such as IPsec.${NC}"
+        sed -i "s/#PermitTunnel no/PermitTunnel no/g" /etc/ssh/sshd_config
+    else
+        echo -e "${YELLOW}[Task RH] : SSH tunnels has already disabled${NC}"
+    fi
+}

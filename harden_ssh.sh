@@ -52,6 +52,7 @@ select choix in "${options[@]}"; do
             Get-SSHPresence #R2
             Remove-OldProtocols #R3
             
+            Disable-SSHTunnels #R5
             Setup-CheckAuthenticityServer #R6
             Remove-AllDSAKey #R7
             Setup-RSAKeySize #R8

@@ -7,6 +7,7 @@ source ./Tools/Cryptography/key_generation.sh
 source ./Tools/Cryptography/access_control.sh
 source ./Tools/Cryptography/choosing-symmetric-algorithms.sh
 source ./Tools/System-Hardening/privilege_separation.sh
+source ./Tools/System-Hardening/sftp-chroot.sh
 source ./Tools/Authentication-Access-Control/user_auth.sh
 source ./Tools/Authentication-Access-Control/access_accountability.sh
 source ./Tools/Authentication-Access-Control/restrictions_of_the_user_environment.sh
@@ -75,6 +76,7 @@ select choix in "${options[@]}"; do
             Setup-PermissionForUserPrivateKeys #P2 & P4
             Check-PasswordProtection #P3
             Setup-PrivilegeSeparationSanboxing #P5
+            Setup-SFTPPermission #P6
 
             Block-EmptyPassword #P9
             Set-LoginGraceTime #P10

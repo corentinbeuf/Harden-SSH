@@ -77,7 +77,7 @@ select choix in "${options[@]}"; do
             Check-PasswordProtection #P3
             Setup-PrivilegeSeparationSanboxing #P5
             Setup-SFTPPermission #P6
-
+            Block-PasswordForHighlyPrivilegedUsers #P7
             Remove-PAMKrb5 #P8
             Block-EmptyPassword #P9
             Set-LoginGraceTime #P10

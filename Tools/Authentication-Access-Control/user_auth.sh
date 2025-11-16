@@ -1,5 +1,24 @@
 #!/bin/bash
 
+function Block-PasswordForHighlyPrivilegedUsers ()
+{
+    if ! grep -Fxq "PasswordAuthentication yes" "/etc/ssh/sshd_config"; then
+        echo -e "${GREEN}[Task P8] : Do not use a password for privileged accounts - Other users.${NC}"
+        sed -i "s/#PasswordAuthentication yes/PasswordAuthentication yes/g" /etc/ssh/sshd_config
+    else
+        echo -e "${YELLOW}[Task P8] : Password auth has already setup for other user${NC}"
+    fi
+
+    if ! grep -Fxq "Match Group sudo" "/etc/ssh/sshd_config"; then
+        echo -e "${GREEN}[Task P8] : Do not use a password for privileged accounts - Sudoers.${NC}"
+        echo "Match Group sudo
+    PasswordAuthentication no
+    PubkeyAuthentication yes" >> /etc/ssh/sshd_config
+    else
+        echo -e "${YELLOW}[Task P8] : Auth for sudoers has already setup${NC}"
+    fi
+}
+
 function Remove-PAMKrb5 ()
 {
     if ! grep -Fxq "KerberosAuthentication no" "/etc/ssh/sshd_config"; then

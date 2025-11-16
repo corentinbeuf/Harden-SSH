@@ -61,3 +61,18 @@ function Check-KeyLifetime ()
         fi
     done
 }
+
+function Check-RSAKeyPresence ()
+{
+    rsa_files=$(find / -type f -name "*id_rsa*" -print 2>/dev/null);
+
+    #Client files
+    if [ -n "$rsa_files" ]; then
+        while IFS= read -r file; do
+            echo -e "${GREEN}[Task R10] : ECDSA keys should be favoured over RSA keys when supported by SSH clients and servers.${NC}"
+            rm -rf "$file"
+        done <<< "$rsa_files"
+    else
+        echo -e "${YELLOW}[Task R10] : No RSA keys was found${NC}"
+    fi
+}

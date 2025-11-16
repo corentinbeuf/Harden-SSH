@@ -54,6 +54,7 @@ select choix in "${options[@]}"; do
             Remove-AllDSAKey #R7
             Setup-RSAKeySize #R8
             Check-ECDSAKeySize #R9
+            Check-RSAKeyPresence #R10
 
             Setup-PermissionForPrivateKeys #R13
             Setup-ProtectPrivateKeyUsingAESWithCBC #R14

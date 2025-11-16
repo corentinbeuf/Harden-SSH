@@ -14,7 +14,7 @@ All the tasks performed in this script are based on the ANSSI guide, accessible 
 - [x] The use of DSA keys is not recommended.
 - [x] The minimum key size shall be 2048 bits for RSA.
 - [x] The minimum key size shall be 256 bits for ECDSA.
-- [ ] ECDSA keys should be favoured over RSA keys when supported by SSH clients and servers.
+- [x] ECDSA keys should be favoured over RSA keys when supported by SSH clients and servers.
 - [ ] Keys should be generated in a context where the RNG is reliable, or at least in an environment where enough entropy has been accumulated.
 - [ ] Some rules can ensure that the entropy pool is properly filled: 
     * keys must be generated on a physical equipment;

@@ -15,15 +15,26 @@ function Setup-PermissionForPrivateKeys ()
     done
 }
 
-function Setup-PermissionForUserPrivateKeys ()
+function Setup-PermissionForUserPrivateKeys() 
 {
-    for dir in /home/*/.ssh; do
-        if [ "$(stat -c "%a" $dir)" -ne "600" ]; then
-            echo -e "${GREEN}[Task P2] : Access to the user’s private key must be done only with the user account in question.${NC}"
-            chmod 600 "$dir"
-        else
-            echo -e "${YELLOW}[Task P2] : The files have the correct permissions${NC}"
+    dirs=(/root/.ssh /home/*/.ssh)
+
+    for dir in "${dirs[@]}"; do
+        [ -d "$dir" ] || continue
+        if [ "$(stat -c "%a" "$dir")" -ne 700 ]; then
+            echo -e "${GREEN}[Task P2] : Fixing permissions for directory $dir${NC}"
+            chmod 700 "$dir"
         fi
+
+        for key in "$dir"/id_*; do
+            [ -f "$key" ] || continue
+            if [ "$(stat -c "%a" "$key")" -ne 600 ]; then
+                echo -e "${GREEN}[Task P2] : Fixing private key permissions: $key${NC}"
+                chmod 600 "$key"
+            fi
+        done
+
+        echo -e "${YELLOW}[Task P2] : The files have the correct permissions${NC}"
     done
 }
 

@@ -5,6 +5,7 @@ source ./Tools/remote_shell_administration.sh
 source ./Tools/Cryptography/authentication.sh
 source ./Tools/Cryptography/key_generation.sh
 source ./Tools/Cryptography/access_control.sh
+source ./Tools/Cryptography/choosing-symmetric-algorithms.sh
 source ./Tools/System-Hardening/privilege_separation.sh
 source ./Tools/Authentication-Access-Control/user_auth.sh
 source ./Tools/Authentication-Access-Control/access_accountability.sh
@@ -58,6 +59,7 @@ select choix in "${options[@]}"; do
 
             Setup-PermissionForPrivateKeys #R13
             Setup-ProtectPrivateKeyUsingAESWithCBC #R14
+            Setup-SymmetricAlgorithms #R15
 
             Block-EnvironmentModification #R23
 

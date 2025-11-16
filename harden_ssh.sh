@@ -53,6 +53,7 @@ select choix in "${options[@]}"; do
             Setup-CheckAuthenticityServer #R6
             Remove-AllDSAKey #R7
             Setup-RSAKeySize #R8
+            Check-ECDSAKeySize #R9
 
             Setup-PermissionForPrivateKeys #R13
             Setup-ProtectPrivateKeyUsingAESWithCBC #R14

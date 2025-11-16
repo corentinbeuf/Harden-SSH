@@ -13,7 +13,7 @@ All the tasks performed in this script are based on the ANSSI guide, accessible 
 - [x] The server authenticity shall always be checked prior to access. This is achieved through preliminary machine authentication by checking the server public key fingerprint, or by verifying the server certificate.
 - [x] The use of DSA keys is not recommended.
 - [x] The minimum key size shall be 2048 bits for RSA.
-- [ ] The minimum key size shall be 256 bits for ECDSA.
+- [x] The minimum key size shall be 256 bits for ECDSA.
 - [ ] ECDSA keys should be favoured over RSA keys when supported by SSH clients and servers.
 - [ ] Keys should be generated in a context where the RNG is reliable, or at least in an environment where enough entropy has been accumulated.
 - [ ] Some rules can ensure that the entropy pool is properly filled: 

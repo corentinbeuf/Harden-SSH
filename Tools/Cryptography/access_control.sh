@@ -7,10 +7,22 @@ function Setup-PermissionForPrivateKeys ()
     for file in "${files[@]}";
     do
         if [ "$(stat -c "%a" $file)" -ne "600" ]; then
-            echo -e "${YELLOW}[Task R13] : The private key should only be known by the entity who needs to prove its identity to a third party and possibly to a trusted authority. This private key should be properly protected in order to avoid its disclosure to any unauthorized person.${NC}"
+            echo -e "${GREEN}[Task R13] : The private key should only be known by the entity who needs to prove its identity to a third party and possibly to a trusted authority. This private key should be properly protected in order to avoid its disclosure to any unauthorized person.${NC}"
             chmod 600 "$file"
         else
             echo -e "${YELLOW}[Task R13] : The files have the correct permissions${NC}"
+        fi
+    done
+}
+
+function Setup-PermissionForUserPrivateKeys ()
+{
+    for dir in /home/*/.ssh; do
+        if [ "$(stat -c "%a" $dir)" -ne "600" ]; then
+            echo -e "${GREEN}[Task P2] : Access to the user’s private key must be done only with the user account in question.${NC}"
+            chmod 600 "$dir"
+        else
+            echo -e "${YELLOW}[Task P2] : The files have the correct permissions${NC}"
         fi
     done
 }

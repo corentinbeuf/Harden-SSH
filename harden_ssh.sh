@@ -68,6 +68,7 @@ select choix in "${options[@]}"; do
             Setup-DNSValidation
 
             Check-KeyLifetime
+            Setup-PermissionForUserPrivateKeys #P2
 
             Setup-PrivilegeSeparationSanboxing
 

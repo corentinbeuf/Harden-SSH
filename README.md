@@ -56,7 +56,7 @@ Each CA private key shall be protected by a unique and robust password.
 
 ### Personnal requirements
 - [x] The lifetime of SSH keys must be a maximum of 3 years.
-- [ ] Access to the user’s private key must be done only with the user account in question.
+- [X] Access to the user’s private key must be done only with the user account in question.
 - [ ] Generate a passphrase for all user keys.
 - [ ] Limit access to the .ssh folder.
 - [x] Implement the separation of privileges.

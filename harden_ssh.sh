@@ -67,6 +67,8 @@ select choix in "${options[@]}"; do
             Create-RevocationFile
             Setup-DNSValidation
 
+            Check-KeyLifetime
+
             Setup-PrivilegeSeparationSanboxing
 
             Block-EmptyPassword

@@ -36,3 +36,16 @@ function Setup-RSAKeySize ()
         echo -e "${YELLOW}[Task R8] : The minimum size of RSA key is already setup${NC}"
     fi
 }
+
+function Check-KeyLifetime ()
+{
+    for dir in /root/.ssh /home/*/.ssh; do
+        if [ -d "$dir" ]; then
+            if find "$dir" -type f -mtime +1095 | grep -q .; then
+                echo "${YELLOW}SSH key are more than 3 years : $dir ${NC}"
+            else
+                echo -e "${YELLOW}[Task P1] : Your SSH keys has less than 3 years${NC}"
+            fi
+        fi
+    done
+}

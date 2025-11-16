@@ -55,7 +55,7 @@ Each CA private key shall be protected by a unique and robust password.
 - [x] SSH host key fingerprints obtained through DNS records should not be trusted without complimentary verifications.
 
 ### Personnal requirements
-- [ ] The lifetime of SSh keys must be a maximum of 3 years.
+- [x] The lifetime of SSH keys must be a maximum of 3 years.
 - [ ] Access to the user’s private key must be done only with the user account in question.
 - [ ] Generate a passphrase for all user keys.
 - [ ] Limit access to the .ssh folder.

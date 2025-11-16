@@ -2,9 +2,10 @@
 
 function Block-RootConnection ()
 {
-    if ! grep -Fxq "PermitRootLogin no" "/etc/ssh/sshd_config"; then
+    if grep -Eq "^(#)?PermitRootLogin (yes|prohibit-password)" /etc/ssh/sshd_config; then
         echo -e "${GREEN}[Task P12] : Disable the root connection in SSH.${NC}"
-        sed -i "s/#PermitRootLogin prohibit-password/PermitRootLogin no/g" /etc/ssh/sshd_config
+        sed -i "s/^#PermitRootLogin prohibit-password/PermitRootLogin no/" /etc/ssh/sshd_config
+        sed -i "s/^PermitRootLogin yes/PermitRootLogin no/" /etc/ssh/sshd_config
     else
         echo -e "${YELLOW}[Task P12] : Root connection has already been blocked${NC}"
     fi

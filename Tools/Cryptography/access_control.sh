@@ -53,9 +53,9 @@ function Check-PasswordProtection ()
     for key in /home/*/.ssh/id_* /root/.ssh/id_*; do
         [ -f "$key" ] || continue
         if ssh-keygen -y -f "$key" >/dev/null 2>&1; then
-            echo "${RED}Key $key : Please generate new key and setup a password${NC}"
+            echo -e "${RED}Key $key : Please generate new key and setup a password${NC}"
         else
-            echo "${YELLOW}[Task P3] : Key $key : is protected with password${NC}"
+            echo -e "${YELLOW}[Task P3] : Key $key : is protected with password${NC}"
         fi
     done
 }

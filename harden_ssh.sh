@@ -46,37 +46,37 @@ options=("Configure all tasks" "Configure a specific task" "Quitter")
 select choix in "${options[@]}"; do
     case $REPLY in
         1)
-            Setup-SSHProtocol
-            Get-SSHPresence
-            Remove-OldProtocols
+            Setup-SSHProtocol #R1
+            Get-SSHPresence #R2
+            Remove-OldProtocols #R3
             
-            Setup-CheckAuthenticityServer
-            Remove-AllDSAKey
-            Setup-RSAKeySize
+            Setup-CheckAuthenticityServer #R6
+            Remove-AllDSAKey #R7
+            Setup-RSAKeySize #R8
 
-            Setup-PermissionForPrivateKeys
-            Setup-ProtectPrivateKeyUsingAESWithCBC
+            Setup-PermissionForPrivateKeys #R13
+            Setup-ProtectPrivateKeyUsingAESWithCBC #R14
 
-            Block-EnvironmentModification
+            Block-EnvironmentModification #R23
 
-            Set-SSHPort
-            Block-TCPForwarding
-            Block-X11Forwarding
-            Block-X11Trusted
+            Set-SSHPort #R25
+            Block-TCPForwarding #R26
+            Block-X11Forwarding #R27
+            Block-X11Trusted #R28
 
-            Create-RevocationFile
-            Setup-DNSValidation
+            Create-RevocationFile #R30
+            Setup-DNSValidation #R31
 
-            Check-KeyLifetime
+            Check-KeyLifetime #P1
             Setup-PermissionForUserPrivateKeys #P2 & P4
             Check-PasswordProtection #P3
             Setup-PrivilegeSeparationSanboxing #P5
 
-            Block-EmptyPassword
-            Set-LoginGraceTime
-            Set-MaxAuthTry
-            Block-RootConnection
-            Set-PrintLastLogon
+            Block-EmptyPassword #P9
+            Set-LoginGraceTime #P10
+            Set-MaxAuthTry #P11
+            Block-RootConnection #P12
+            Set-PrintLastLogon #P13
             ;;
         2)
             echo "..."

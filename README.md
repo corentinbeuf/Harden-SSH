@@ -23,7 +23,7 @@ All the tasks performed in this script are based on the ANSSI guide, accessible 
 - [x] The private key should only be known by the entity who needs to prove its identity to a third party and possibly to a trusted authority. This private key should be properly protected in order to avoid its disclosure to any unauthorized person.
 - [x] Private keys shall be password protected using AES128-CBC mode.
 - [x] The encryption algorithm shall either be AES128-CTR, AES192-CTR or AES256-CTR. The integrity mechanism shall rely on HMAC-SHA1, HMAC-SHA256 or HMACSHA512.
-- [ ] A preliminary step in hardening the sshd service is to use proper compilation flags.
+- [x] A preliminary step in hardening the sshd service is to use proper compilation flags.
 - [ ] User authentication should be performed with one of the following mechanisms, given by order of preference:
     * ECDSA asymmetric cryptography;
     * RSA asymmetric cryptography;

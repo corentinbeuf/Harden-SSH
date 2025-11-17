@@ -6,6 +6,7 @@ source ./Tools/Cryptography/authentication.sh
 source ./Tools/Cryptography/key_generation.sh
 source ./Tools/Cryptography/access_control.sh
 source ./Tools/Cryptography/choosing-symmetric-algorithms.sh
+source ./Tools/System-Hardening/hardening-compilation.sh
 source ./Tools/System-Hardening/privilege_separation.sh
 source ./Tools/System-Hardening/sftp-chroot.sh
 source ./Tools/Authentication-Access-Control/user_auth.sh
@@ -62,6 +63,7 @@ select choix in "${options[@]}"; do
             Setup-PermissionForPrivateKeys #R13
             Setup-ProtectPrivateKeyUsingAESWithCBC #R14
             Setup-SymmetricAlgorithms #R15
+            Check-SSHDHardening #R16
 
             Block-EnvironmentModification #R23
 

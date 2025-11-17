@@ -33,8 +33,8 @@ All the tasks performed in this script are based on the ANSSI guide, accessible 
 - [ ] Users rights shall follow the least privilege principle. Restrictions can be applied on several parameters: available commands, source IP, redirection of forwarding permissions. . .
 - [x] When SSH bouncing is necessary through a relay host, Agent Forwarding (-A option of ssh) should be used.
 - [ ] The relay host server shall be a trusted host.
-- [ ] Every user must have his own, unique, non-transferable account.
-- [ ] Access to a service shall be restricted to users having a legitimate need. This restriction shall apply on a white-list basis: only explicitly allowed users shall connect to a host via SSH and possibly from specified source IP addresses.
+- [x] Every user must have his own, unique, non-transferable account.
+- [x] Access to a service shall be restricted to users having a legitimate need. This restriction shall apply on a white-list basis: only explicitly allowed users shall connect to a host via SSH and possibly from specified source IP addresses.
 - [x] The ability for a user to tamper with the environment shall be denied by default. Usersupplied environment variables shall be selected on a case-by-case basis.
 - [ ] Users shall only execute strictly necessary commands. This restriction can be achieved in the following ways:
     * using the ForceCommand directive on a per user basis in the sshd_config file;
@@ -102,3 +102,12 @@ By default, specific configuration are not prensent in the main script. To imple
         AllowAgentForwarding yes
         ```
     - Restart "**sshd**" service when your configuration is implement
+  
+- R22 : Access to a service shall be restricted to users having a legitimate need. This restriction shall apply on a white-list basis: only explicitly allowed users shall connect to a host via SSH and possibly from specified source IP addresses.
+  - Edit "**/etc/ssh/sshd_config**".
+  - Uncomment this line : 
+    ```
+    #AllowUsers example@10.10.10.1
+    ```
+  - Define your users and IP.
+  - Restart "**sshd**" service.

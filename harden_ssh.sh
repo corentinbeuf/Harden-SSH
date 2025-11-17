@@ -12,6 +12,7 @@ source ./Tools/System-Hardening/sftp-chroot.sh
 source ./Tools/Authentication-Access-Control/user_auth.sh
 source ./Tools/Authentication-Access-Control/agent_auth.sh
 source ./Tools/Authentication-Access-Control/access_accountability.sh
+source ./Tools/Authentication-Access-Control/allow-users.sh
 source ./Tools/Authentication-Access-Control/restrictions_of_the_user_environment.sh
 source ./Tools/Protocole-Network-Access/listen-address-port.sh
 source ./Tools/Protocole-Network-Access/tcp-forwarding.sh
@@ -68,6 +69,7 @@ select choix in "${options[@]}"; do
 
             Setup-AuthentificationAgent #R19
 
+            Setup-Allowusers #R22
             Block-EnvironmentModification #R23
 
             Set-SSHPort #R25
@@ -88,7 +90,7 @@ select choix in "${options[@]}"; do
             Block-EmptyPassword #P9
             Set-LoginGraceTime #P10
             Set-MaxAuthTry #P11
-            Block-RootConnection #P12
+            Block-RootConnection #P12 & R21
             Set-PrintLastLogon #P13
             ;;
         2)

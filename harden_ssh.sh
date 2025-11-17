@@ -10,6 +10,7 @@ source ./Tools/System-Hardening/hardening-compilation.sh
 source ./Tools/System-Hardening/privilege_separation.sh
 source ./Tools/System-Hardening/sftp-chroot.sh
 source ./Tools/Authentication-Access-Control/user_auth.sh
+source ./Tools/Authentication-Access-Control/agent_auth.sh
 source ./Tools/Authentication-Access-Control/access_accountability.sh
 source ./Tools/Authentication-Access-Control/restrictions_of_the_user_environment.sh
 source ./Tools/Protocole-Network-Access/listen-address-port.sh
@@ -64,6 +65,8 @@ select choix in "${options[@]}"; do
             Setup-ProtectPrivateKeyUsingAESWithCBC #R14
             Setup-SymmetricAlgorithms #R15
             Check-SSHDHardening #R16
+
+            Setup-AuthentificationAgent #R19
 
             Block-EnvironmentModification #R23
 

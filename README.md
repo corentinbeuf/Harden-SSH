@@ -31,7 +31,7 @@ All the tasks performed in this script are based on the ANSSI guide, accessible 
     * authentication modules that expose neither the user password nor its hash (third-party PAM or BSD Auth modules);
     * password check against a database (such as passwd/shadow) or a directory.
 - [ ] Users rights shall follow the least privilege principle. Restrictions can be applied on several parameters: available commands, source IP, redirection of forwarding permissions. . .
-- [ ] When SSH bouncing is necessary through a relay host, Agent Forwarding (-A option of ssh) should be used.
+- [x] When SSH bouncing is necessary through a relay host, Agent Forwarding (-A option of ssh) should be used.
 - [ ] The relay host server shall be a trusted host.
 - [ ] Every user must have his own, unique, non-transferable account.
 - [ ] Access to a service shall be restricted to users having a legitimate need. This restriction shall apply on a white-list basis: only explicitly allowed users shall connect to a host via SSH and possibly from specified source IP addresses.
@@ -68,3 +68,37 @@ Each CA private key shall be protected by a unique and robust password.
 - [x] Limit the number of connection attempts.
 - [X] Disable the root connection in SSH.
 - [X] Display information related to the user’s last login.
+
+## Implementation : 
+
+By default, specific configuration are not prensent in the main script. To implement, a specific configuration, example are provided below :
+
+- R19 : When SSH bouncing is necessary through a relay host, Agent Forwarding (-A option of ssh) should be used.
+    - On client server :
+      - Edit "**~/.ssh/config**"
+      - Add these lines and adjuste with your configuration :
+        ```
+        Host bastion
+            HostName bastion.example.com
+            User admin
+            ForwardAgent yes
+
+        Host server-final
+            HostName 10.0.2.12
+            User admin
+            ProxyJump bastion
+            ForwardAgent yes
+        ```
+      - Edit "**~/.ssh/config**"
+      - Add this line and adjuste with your configuration :
+        ```
+        AllowAgentForwarding no
+        ```
+
+    - On server :
+      - Edit "**/etc/ssh/sshd_config**"
+      - Add this line and adjuste with your configuration :
+        ```
+        AllowAgentForwarding yes
+        ```
+    - Restart "**sshd**" service when your configuration is implement

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+chmod +x Menu/detailed_menu.sh
+
 source ./Tools/ssh_protocol.sh
 source ./Tools/remote_shell_administration.sh
 source ./Tools/Cryptography/authentication.sh
@@ -46,7 +48,7 @@ NC='\033[0m' # Aucune couleur
 CheckRequirements
 
 PS3="Please select a task ? "
-options=("Configure all tasks" "Configure a specific task" "Quitter")
+options=("Configure all tasks" "Configure a specific task" "Quit")
 
 select choix in "${options[@]}"; do
     case $REPLY in
@@ -94,7 +96,7 @@ select choix in "${options[@]}"; do
             Set-PrintLastLogon #P13
             ;;
         2)
-            echo "..."
+            ./Menu/detailed_menu.sh
             ;;
         3)
             echo -e "${YELLOW}[Task] : Restart SSH service${NC}"

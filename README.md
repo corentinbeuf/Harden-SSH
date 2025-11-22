@@ -72,43 +72,4 @@ Each CA private key shall be protected by a unique and robust password.
 
 ## Implementation : 
 
-By default, specific configuration are not prensent in the main script. To implement, a specific configuration, example are provided below :
-
-- R19 : When SSH bouncing is necessary through a relay host, Agent Forwarding (-A option of ssh) should be used.
-    - On client server :
-      - Edit "**~/.ssh/config**"
-      - Add these lines and adjuste with your configuration :
-        ```
-        Host bastion
-            HostName bastion.example.com
-            User admin
-            ForwardAgent yes
-
-        Host server-final
-            HostName 10.0.2.12
-            User admin
-            ProxyJump bastion
-            ForwardAgent yes
-        ```
-      - Edit "**~/.ssh/config**"
-      - Add this line and adjuste with your configuration :
-        ```
-        AllowAgentForwarding no
-        ```
-
-    - On server :
-      - Edit "**/etc/ssh/sshd_config**"
-      - Add this line and adjuste with your configuration :
-        ```
-        AllowAgentForwarding yes
-        ```
-    - Restart "**sshd**" service when your configuration is implement
-  
-- R22 : Access to a service shall be restricted to users having a legitimate need. This restriction shall apply on a white-list basis: only explicitly allowed users shall connect to a host via SSH and possibly from specified source IP addresses.
-  - Edit "**/etc/ssh/sshd_config**".
-  - Uncomment this line : 
-    ```
-    #AllowUsers example@10.10.10.1
-    ```
-  - Define your users and IP.
-  - Restart "**sshd**" service.
+By default, specific configurations (SFTP, SSH relay ...) are not taken into account in the main script. If you want to implement them, the steps are available on this [file](./DOCUMENTATION.md).

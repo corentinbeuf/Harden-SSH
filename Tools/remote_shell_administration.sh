@@ -41,6 +41,29 @@ function Remove-OldProtocols() {
     done
 }
 
+function Get-FTPPresence ()
+{
+
+    packages_to_check=(
+        "vsftpd"
+        "proftpd"
+        "pure-ftpd"
+        "inetutils-ftpd"
+        "tftpd"
+        "inetutils-ftp"
+        "rsh-client"
+        "rsh-redone-client"
+    )
+
+    for package in "${packages_to_check[@]}"; do
+        if dpkg -l | awk '{print $2}' | grep -qi "$package"; then
+            echo -e "${RED}[Task R4] : ${package} is installed on the server, please remove it !${NC}"
+        else
+            echo -e "${YELLOW}[Task R4] : FTP, RCP has already removed.${NC}"
+        fi
+    done
+}
+
 function Disable-SSHTunnels ()
 {
     if ! grep -Fxq "PermitTunnel no" "/etc/ssh/sshd_config"; then

@@ -33,7 +33,7 @@ PS3="Please select a task ? "
 options=("${CYAN_MENU}R1 - Setup SSH Protocol${NC_MENU}"\
  "${CYAN_MENU}R2 - Get if SSH is installed${NC_MENU}"\
  "${CYAN_MENU}R3 - Remove old protocols (TELNET, RSH, RLOGIN)${NC_MENU}"\
- "${CYAN_MENU}R4 - ${NC_MENU}"\
+ "${CYAN_MENU}R4 - Check presence of FTP or RCP protocol${NC_MENU}"\
  "${CYAN_MENU}R5 - Disable SSH tunnels${NC_MENU}"\
  "${CYAN_MENU}R6 - Check authenticity server${NC_MENU}"\
  "${CYAN_MENU}R7 - Remove DSA key${NC_MENU}"\
@@ -88,6 +88,7 @@ select choice in "${options[@]}"; do
             Remove-OldProtocols #R3
             ;;
         4)
+            Get-FTPPresence #R4
             ;;
         5)
             Disable-SSHTunnels #R5

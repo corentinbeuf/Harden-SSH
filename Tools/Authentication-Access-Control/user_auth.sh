@@ -1,5 +1,70 @@
 #!/bin/bash
 
+function Set-UserAuthMechanisms ()
+{
+    if ! grep -Fxq "PubkeyAuthentication yes" "/etc/ssh/sshd_config"; then
+        echo -e "${GREEN}[Task R17] : User authentication should be performed with one of the following mechanisms - Pubkey auth.${NC}"
+        sed -i "s/#PubkeyAuthentication yes/PubkeyAuthentication yes/g" /etc/ssh/sshd_config
+    else
+        echo -e "${YELLOW}[Task R17] : Pubkey auth has already enabled${NC}"
+    fi
+
+    if ! grep -Fxq "HostKeyAlgorithms ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,rsa-sha2-512,rsa-sha2-256" "/etc/ssh/sshd_config"; then
+        echo -e "${GREEN}[Task R17] : User authentication should be performed with one of the following mechanisms - Hostkey algorithms.${NC}"
+        sed -i '/PubkeyAuthentication yes/a HostKeyAlgorithms ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,rsa-sha2-512,rsa-sha2-256' /etc/ssh/sshd_config
+    else
+        echo -e "${YELLOW}[Task R15] : Hostkey algorithms are already setup${NC}"
+    fi
+
+    if ! grep -Fxq "PubkeyAcceptedAlgorithms ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,rsa-sha2-512,rsa-sha2-256" "/etc/ssh/sshd_config"; then
+        echo -e "${GREEN}[Task R17] : User authentication should be performed with one of the following mechanisms - Pubkey algorithms.${NC}"
+        sed -i '/HostKeyAlgorithms ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,rsa-sha2-512,rsa-sha2-256/a PubkeyAcceptedAlgorithms ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,rsa-sha2-512,rsa-sha2-256' /etc/ssh/sshd_config
+    else
+        echo -e "${YELLOW}[Task R15] : Hostkey algorithms are already setup${NC}"
+    fi
+
+    if ! grep -Fxq "GSSAPIAuthentication yes" "/etc/ssh/sshd_config"; then
+        echo -e "${GREEN}[Task R17] : User authentication should be performed with one of the following mechanisms - GSSAPI.${NC}"
+        sed -i "s/#GSSAPIAuthentication no/GSSAPIAuthentication yes/g" /etc/ssh/sshd_config
+    else
+        echo -e "${YELLOW}[Task R17] : GSSAPI is already setup${NC}"
+    fi
+
+    if ! grep -Fxq "GSSAPICleanupCredentials yes" "/etc/ssh/sshd_config"; then
+        echo -e "${GREEN}[Task R17] : User authentication should be performed with one of the following mechanisms - GSSAPI cleanup credentials.${NC}"
+        sed -i "s/#GSSAPICleanupCredentials yes/GSSAPICleanupCredentials yes/g" /etc/ssh/sshd_config
+    else
+        echo -e "${YELLOW}[Task R17] : GSSAPI cleanup credentiels is already setup${NC}"
+    fi
+
+    packages_to_install=(
+        "krb5-user"
+        "libpam-krb5"
+    )
+
+    for package in "${packages_to_install[@]}"; do
+        if dpkg -l | awk '{print $2}' | grep -qi "$package"; then
+            echo -e "${GREEN}[Task R17] : ${package} was installed on the server.${NC}"
+            apt-get install -y $package >/dev/null 2>&1
+        else
+            echo -e "${YELLOW}[Task R17] : Kerberos packages has already installed.${NC}"
+        fi
+    done
+
+    if ! grep -Fxq "UsePAM yes" "/etc/ssh/sshd_config"; then
+        echo -e "${RED}[Task R17] : Please enable PAM auth in SSHd config.${NC}"
+    else
+        echo -e "${YELLOW}[Task R17] : PAM auth is already enabled${NC}"
+    fi
+ 
+    if ! grep -Fxq "PasswordAuthentication yes" "/etc/ssh/sshd_config"; then
+        echo -e "${GREEN}[Task R17] : User authentication should be performed with one of the following mechanisms - Password authentication.${NC}"
+        sed -i "s/#PasswordAuthentication yes/PasswordAuthentication yes/g" /etc/ssh/sshd_config
+    else
+        echo -e "${YELLOW}[Task R17] : Password auth has already setup for other user${NC}"
+    fi
+}
+
 function Block-PasswordForHighlyPrivilegedUsers ()
 {
     if ! grep -Fxq "PasswordAuthentication yes" "/etc/ssh/sshd_config"; then

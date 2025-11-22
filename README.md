@@ -24,7 +24,7 @@ All the tasks performed in this script are based on the ANSSI guide, accessible 
 - [x] Private keys shall be password protected using AES128-CBC mode.
 - [x] The encryption algorithm shall either be AES128-CTR, AES192-CTR or AES256-CTR. The integrity mechanism shall rely on HMAC-SHA1, HMAC-SHA256 or HMACSHA512.
 - [x] A preliminary step in hardening the sshd service is to use proper compilation flags.
-- [ ] User authentication should be performed with one of the following mechanisms, given by order of preference:
+- [x] User authentication should be performed with one of the following mechanisms, given by order of preference:
     * ECDSA asymmetric cryptography;
     * RSA asymmetric cryptography;
     * symmetric cryptography (Kerberos tickets from the GSSAPI);

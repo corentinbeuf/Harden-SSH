@@ -46,7 +46,7 @@ options=("${CYAN_MENU}R1 - Setup SSH Protocol${NC_MENU}"\
  "${CYAN_MENU}R14 - Protect private keys with AES128-CBC mode${NC_MENU}"\
  "${CYAN_MENU}R15 - Define yhe possible symmetrical algorithms possible to use${NC_MENU}"\
  "${CYAN_MENU}R16 - Check if the sshd daemon is hardened since its compilation${NC_MENU}"\
- "${CYAN_MENU}R17 - ${NC_MENU}"\
+ "${CYAN_MENU}R17 - Setup user authentication mechanisms${NC_MENU}"\
  "${CYAN_MENU}R18 - ${NC_MENU}"\
  "${CYAN_MENU}R19 - Disable agent forwarding by default${NC_MENU}"\
  "${CYAN_MENU}R20 - ${NC_MENU}"\
@@ -125,6 +125,7 @@ select choice in "${options[@]}"; do
             Check-SSHDHardening #R16
             ;;
         17)
+            Set-UserAuthMechanisms #R17
             ;;
         18)
             ;;

@@ -74,6 +74,7 @@ select choix in "${options[@]}"; do
             Setup-ProtectPrivateKeyUsingAESWithCBC #R14
             Setup-SymmetricAlgorithms #R15
             Check-SSHDHardening #R16
+            Set-UserAuthMechanisms #R17
 
             Setup-AuthentificationAgent #R19
 

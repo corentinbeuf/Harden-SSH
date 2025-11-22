@@ -9,7 +9,7 @@ function Remove-AllDSAKey ()
     if [ -n "$dsa_client_files" ]; then
         while IFS= read -r client_file; do
             echo -e "${GREEN}[Task R7] : The use of DSA keys is not recommended - Client files.${NC}"
-            rm -rf "$client_file"
+            sudo rm -rf "$client_file"
         done <<< "$dsa_client_files"
     else
         echo -e "${YELLOW}[Task R7] : No file containing DSA keys was found${NC}"
@@ -19,7 +19,7 @@ function Remove-AllDSAKey ()
     if [ -n "$dsa_server_files" ]; then
         while IFS= read -r server_file; do
             echo -e "${GREEN}[Task R7] : The use of DSA keys is not recommended - Server files.${NC}"
-            rm -rf "$server_file"
+            sudo rm -rf "$server_file"
         done <<< "$dsa_server_files"
     else
         echo -e "${YELLOW}[Task R7] : No file containing DSA keys was found${NC}"
@@ -31,7 +31,7 @@ function Setup-RSAKeySize ()
     #TODO: Get version of OpenSSH. If OpenSSH version is under v9.1, don't execute this function
     if ! grep -Fxq "RequiredRSASize 2048" "/etc/ssh/sshd_config"; then
         echo -e "${GREEN}[Task R8] : The minimum key size shall be 2048 bits for RSA.${NC}"
-        sed -i '/#HostKey \/etc\/ssh\/ssh_host_rsa_key/i RequiredRSASize 2048' /etc/ssh/sshd_config
+        sudo sed -i '/#HostKey \/etc\/ssh\/ssh_host_rsa_key/i RequiredRSASize 2048' /etc/ssh/sshd_config
     else
         echo -e "${YELLOW}[Task R8] : The minimum size of RSA key is already setup${NC}"
     fi
@@ -70,7 +70,7 @@ function Check-RSAKeyPresence ()
     if [ -n "$rsa_files" ]; then
         while IFS= read -r file; do
             echo -e "${GREEN}[Task R10] : ECDSA keys should be favoured over RSA keys when supported by SSH clients and servers.${NC}"
-            rm -rf "$file"
+            sudo rm -rf "$file"
         done <<< "$rsa_files"
     else
         echo -e "${YELLOW}[Task R10] : No RSA keys was found${NC}"

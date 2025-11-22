@@ -5,7 +5,7 @@ function Check-SSHDHardening() {
     ERREUR=0
 
     if ! apt-get list --installed binutils &>/dev/null; then
-        apt-get install binutils -y &>/dev/null
+        sudo apt-get install binutils -y &>/dev/null
     fi
 
     # PIE

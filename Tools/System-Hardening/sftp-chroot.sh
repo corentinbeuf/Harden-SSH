@@ -19,11 +19,13 @@ function Setup-SFTPPermission ()
 
     if ! grep -Fxq "Match Group sftp-users" "/etc/ssh/sshd_config"; then
         echo -e "${GREEN}[Task P6] : Implement the principle of least privilege for users using SFTP only - Permission.${NC}"
-        sudo echo "Match Group sftp-users
+        sudo tee -a /etc/ssh/sshd_config > /dev/null <<EOF
+Match Group sftp-users
     ChrootDirectory /sftp-home/%u
     ForceCommand internal-sftp
     AllowTCPForwarding no
-    X11Forwarding no" >> /etc/ssh/sshd_config
+    X11Forwarding no
+EOF
     else
         echo -e "${YELLOW}[Task P6] : SFTP permissions are already setup${NC}"
     fi

@@ -77,18 +77,22 @@ function Block-PasswordForHighlyPrivilegedUsers ()
     # Adding this line in case the root account is used
     if ! grep -Fxq "Match User root" "/etc/ssh/sshd_config"; then
         echo -e "${GREEN}[Task P7] : Do not use a password for privileged accounts - Root.${NC}"
-        sudo echo "Match User root
+        sudo tee -a /etc/ssh/sshd_config > /dev/null <<EOF
+Match User root
     PasswordAuthentication no
-    PubkeyAuthentication yes" >> /etc/ssh/sshd_config
+    PubkeyAuthentication yes
+EOF
     else
         echo -e "${YELLOW}[Task P7] : Auth for root has already setup${NC}"
     fi
 
     if ! grep -Fxq "Match Group sudo" "/etc/ssh/sshd_config"; then
         echo -e "${GREEN}[Task P7] : Do not use a password for privileged accounts - Sudoers.${NC}"
-        sudo echo "Match Group sudo
+        sudo tee -a /etc/ssh/sshd_config > /dev/null <<EOF
+Match Group sudo
     PasswordAuthentication no
-    PubkeyAuthentication yes" >> /etc/ssh/sshd_config
+    PubkeyAuthentication yes
+EOF
     else
         echo -e "${YELLOW}[Task P7] : Auth for sudoers has already setup${NC}"
     fi

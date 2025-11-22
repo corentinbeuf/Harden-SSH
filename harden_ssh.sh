@@ -25,8 +25,9 @@ source ./Tools/DNS-Record/dns-record.sh
 function CheckRequirements ()
 {
     if [ "$(lsb_release -si)" = "Debian" ] || [ "$(lsb_release -si)" = "Ubuntu" ]; then
-        echo -e "${RED} This script is created to run only on Debian or Ubuntu !${NC}"
+        echo -e ""
     else
+        echo -e "${RED} This script is created to run only on Debian or Ubuntu !${NC}"
         exit 1
     fi
 

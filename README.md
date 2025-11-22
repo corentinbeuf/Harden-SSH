@@ -68,6 +68,7 @@ Each CA private key shall be protected by a unique and robust password.
 - [x] Limit the number of connection attempts.
 - [X] Disable the root connection in SSH.
 - [X] Display information related to the user’s last login.
+- [ ] Enable 2FA on SSH connection.
 
 ## Implementation : 
 

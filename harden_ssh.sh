@@ -1,6 +1,8 @@
 #!/bin/bash
 
 chmod +x Menu/detailed_menu.sh
+chmod +x Audit/audit_sshd_config.sh
+chmod +x Audit/audit_ssh_config.sh
 
 source ./Tools/ssh_protocol.sh
 source ./Tools/remote_shell_administration.sh
@@ -55,11 +57,13 @@ NC='\033[0m' # Aucune couleur
 CheckRequirements
 
 PS3="Please select a task ? "
-options=("Configure all tasks" "Configure a specific task" "Quit")
+options=("Audit" "Configure all tasks" "Configure a specific task" "Quit")
 
 select choix in "${options[@]}"; do
     case $REPLY in
         1)
+            ;;
+        2)
             Setup-SSHProtocol #R1
             Get-SSHPresence #R2
             Remove-OldProtocols #R3
@@ -103,10 +107,10 @@ select choix in "${options[@]}"; do
             Block-RootConnection #P12 & R21
             Set-PrintLastLogon #P13
             ;;
-        2)
+        3)
             ./Menu/detailed_menu.sh
             ;;
-        3)
+        4)
             echo -e "${YELLOW}[Task] : Restart SSH service${NC}"
             sudo systemctl restart sshd
             echo "Exit"

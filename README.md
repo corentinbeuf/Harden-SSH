@@ -1,7 +1,7 @@
 # Harden-SSH
 
 This script permit to secure your SSH service on one Linux server.
-All the tasks performed in this script are based on the ANSSI guide, accessible from this link : [(Open)SSH secure use recommendations](https://cyber.gouv.fr/publications/usage-securise-dopenssh). Available in French ans in English.
+All the tasks performed in this script are based on the ANSSI guide, accessible from this link : [(Open)SSH secure use recommendations](https://cyber.gouv.fr/publications/usage-securise-dopenssh). Available in French and in English.
 
 ## Hardening
 ### Requirements

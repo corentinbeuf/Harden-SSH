@@ -28,12 +28,19 @@ function Remove-AllDSAKey ()
 
 function Setup-RSAKeySize ()
 {
-    #TODO: Get version of OpenSSH. If OpenSSH version is under v9.1, don't execute this function
-    if ! grep -Fxq "RequiredRSASize 2048" "/etc/ssh/sshd_config"; then
-        echo -e "${GREEN}[Task R8] : The minimum key size shall be 2048 bits for RSA.${NC}"
-        sudo sed -i '/#HostKey \/etc\/ssh\/ssh_host_rsa_key/i RequiredRSASize 2048' /etc/ssh/sshd_config
+    version=$(ssh -V 2>&1 | awk '{print $1}' | cut -d'_' -f2)
+    major=$(echo "$version" | cut -d'.' -f1)
+    minor=$(echo "$version" | cut -d'.' -f2 | sed 's/[^0-9].*//')
+
+    if (( major > 9 || (major == 9 && minor >= 1) )); then
+        if ! grep -Fxq "RequiredRSASize 2048" "/etc/ssh/sshd_config"; then
+            echo -e "${GREEN}[Task R8] : The minimum key size shall be 2048 bits for RSA.${NC}"
+            sudo sed -i '/#HostKey \/etc\/ssh\/ssh_host_rsa_key/i RequiredRSASize 2048' /etc/ssh/sshd_config
+        else
+            echo -e "${YELLOW}[Task R8] : The minimum size of RSA key is already setup${NC}"
+        fi
     else
-        echo -e "${YELLOW}[Task R8] : The minimum size of RSA key is already setup${NC}"
+        echo -e "${RED}[Task R8] : The version of OpenSSh is too old for this parameter${NC}"
     fi
 }
 

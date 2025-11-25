@@ -44,10 +44,12 @@ function Set-UserAuthMechanisms ()
 
     for package in "${packages_to_install[@]}"; do
         if dpkg -l | awk '{print $2}' | grep -qi "$package"; then
-            echo -e "${GREEN}[Task R17] : ${package} was installed on the server.${NC}"
-            sudo apt-get install -y $package >/dev/null 2>&1
-        else
             echo -e "${YELLOW}[Task R17] : Kerberos packages has already installed.${NC}"
+        else
+            echo -e "${GREEN}[Task R17] : ${package} was installed on the server.${NC}"
+            export DEBIAN_FRONTEND=noninteractive
+            sudo apt-get install -y $package >/dev/null 2>&1
+            unset DEBIAN_FRONTEND
         fi
     done
 

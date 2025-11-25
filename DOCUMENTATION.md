@@ -39,6 +39,11 @@ By default, specific configuration are not prensent in the main script. To imple
   - Define your users and IP.
   - Restart "**sshd**" service.
 
+- R25 : The SSH server shall only listen on the administration network.
+  - Define a second IP address on your server. This IP address must be on your administration network.
+  - 1st IP address = for user connection
+  - 2nd IP address = for management
+
 - R30 : If a key cannot be considered safe anymore, it shall be quickly revoked at the SSH level.
   - In the script, the file is created and he is specified in SSH configuration. To add revoked in this file, execute this command (change SSh key) :
     ```bash

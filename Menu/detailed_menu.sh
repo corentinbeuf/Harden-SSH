@@ -1,24 +1,26 @@
 #!/bin/bash
 
-source Tools/ssh_protocol.sh
-source Tools/remote_shell_administration.sh
-source Tools/Cryptography/authentication.sh
-source Tools/Cryptography/key_generation.sh
-source Tools/Cryptography/access_control.sh
-source Tools/Cryptography/choosing-symmetric-algorithms.sh
-source Tools/System-Hardening/hardening-compilation.sh
-source Tools/System-Hardening/privilege_separation.sh
-source Tools/System-Hardening/sftp-chroot.sh
-source Tools/Authentication-Access-Control/user_auth.sh
-source Tools/Authentication-Access-Control/agent_auth.sh
-source Tools/Authentication-Access-Control/access_accountability.sh
-source Tools/Authentication-Access-Control/allow-users.sh
-source Tools/Authentication-Access-Control/restrictions_of_the_user_environment.sh
-source Tools/Protocole-Network-Access/listen-address-port.sh
-source Tools/Protocole-Network-Access/tcp-forwarding.sh
-source Tools/Protocole-Network-Access/x11-forwarding.sh
-source Tools/OpenSSH-PKI/revocation.sh
-source Tools/DNS-Record/dns-record.sh
+SCRIPT_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
+
+source "$SCRIPT_DIR/Tools/ssh_protocol.sh"
+source "$SCRIPT_DIR/Tools/remote_shell_administration.sh"
+source "$SCRIPT_DIR/Tools/Cryptography/authentication.sh"
+source "$SCRIPT_DIR/Tools/Cryptography/key_generation.sh"
+source "$SCRIPT_DIR/Tools/Cryptography/access_control.sh"
+source "$SCRIPT_DIR/Tools/Cryptography/choosing-symmetric-algorithms.sh"
+source "$SCRIPT_DIR/Tools/System-Hardening/hardening-compilation.sh"
+source "$SCRIPT_DIR/Tools/System-Hardening/privilege_separation.sh"
+source "$SCRIPT_DIR/Tools/System-Hardening/sftp-chroot.sh"
+source "$SCRIPT_DIR/Tools/Authentication-Access-Control/user_auth.sh"
+source "$SCRIPT_DIR/Tools/Authentication-Access-Control/agent_auth.sh"
+source "$SCRIPT_DIR/Tools/Authentication-Access-Control/access_accountability.sh"
+source "$SCRIPT_DIR/Tools/Authentication-Access-Control/allow-users.sh"
+source "$SCRIPT_DIR/Tools/Authentication-Access-Control/restrictions_of_the_user_environment.sh"
+source "$SCRIPT_DIR/Tools/Protocole-Network-Access/listen-address-port.sh"
+source "$SCRIPT_DIR/Tools/Protocole-Network-Access/tcp-forwarding.sh"
+source "$SCRIPT_DIR/Tools/Protocole-Network-Access/x11-forwarding.sh"
+source "$SCRIPT_DIR/Tools/OpenSSH-PKI/revocation.sh"
+source "$SCRIPT_DIR/Tools/DNS-Record/dns-record.sh"
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -53,7 +55,7 @@ options=("${CYAN_MENU}R1 - Setup SSH Protocol${NC_MENU}"\
  "${CYAN_MENU}R21 - Disable connection with root user${NC_MENU}"
  "${CYAN_MENU}R22 - Setup users and IP allowed to use SSH${NC_MENU}"\
  "${CYAN_MENU}R23 - Block possibility to change environment by the sshd service${NC_MENU}"\
- "${CYAN_MENU}R24 - ${NC_MENU}"\
+ "${CYAN_MENU}R24 - Define IP of management interface${NC_MENU}"\
  "${CYAN_MENU}R25 - Define new SSH port${NC_MENU}"\
  "${CYAN_MENU}R26 - Disable TCP forwarding${NC_MENU}"\
  "${CYAN_MENU}R27 - Disable X11 forwarding${NC_MENU}"\
@@ -144,6 +146,7 @@ select choice in "${options[@]}"; do
             Block-EnvironmentModification #R23
             ;;
         24)
+            Set-ManagementIPAddress
             ;;
         25)
             Set-SSHPort #R25

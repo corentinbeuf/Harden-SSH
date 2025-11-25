@@ -1,26 +1,29 @@
 #!/bin/bash
 
-chmod +x Menu/detailed_menu.sh
+SCRIPT_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
 
-source ./Tools/ssh_protocol.sh
-source ./Tools/remote_shell_administration.sh
-source ./Tools/Cryptography/authentication.sh
-source ./Tools/Cryptography/key_generation.sh
-source ./Tools/Cryptography/access_control.sh
-source ./Tools/Cryptography/choosing-symmetric-algorithms.sh
-source ./Tools/System-Hardening/hardening-compilation.sh
-source ./Tools/System-Hardening/privilege_separation.sh
-source ./Tools/System-Hardening/sftp-chroot.sh
-source ./Tools/Authentication-Access-Control/user_auth.sh
-source ./Tools/Authentication-Access-Control/agent_auth.sh
-source ./Tools/Authentication-Access-Control/access_accountability.sh
-source ./Tools/Authentication-Access-Control/allow-users.sh
-source ./Tools/Authentication-Access-Control/restrictions_of_the_user_environment.sh
-source ./Tools/Protocole-Network-Access/listen-address-port.sh
-source ./Tools/Protocole-Network-Access/tcp-forwarding.sh
-source ./Tools/Protocole-Network-Access/x11-forwarding.sh
-source ./Tools/OpenSSH-PKI/revocation.sh
-source ./Tools/DNS-Record/dns-record.sh
+chmod +x "$SCRIPT_DIR/Menu/detailed_menu.sh"
+chmod +x "$SCRIPT_DIR/Audit/audit.sh"
+
+source "$SCRIPT_DIR/Tools/ssh_protocol.sh"
+source "$SCRIPT_DIR/Tools/remote_shell_administration.sh"
+source "$SCRIPT_DIR/Tools/Cryptography/authentication.sh"
+source "$SCRIPT_DIR/Tools/Cryptography/key_generation.sh"
+source "$SCRIPT_DIR/Tools/Cryptography/access_control.sh"
+source "$SCRIPT_DIR/Tools/Cryptography/choosing-symmetric-algorithms.sh"
+source "$SCRIPT_DIR/Tools/System-Hardening/hardening-compilation.sh"
+source "$SCRIPT_DIR/Tools/System-Hardening/privilege_separation.sh"
+source "$SCRIPT_DIR/Tools/System-Hardening/sftp-chroot.sh"
+source "$SCRIPT_DIR/Tools/Authentication-Access-Control/user_auth.sh"
+source "$SCRIPT_DIR/Tools/Authentication-Access-Control/agent_auth.sh"
+source "$SCRIPT_DIR/Tools/Authentication-Access-Control/access_accountability.sh"
+source "$SCRIPT_DIR/Tools/Authentication-Access-Control/allow-users.sh"
+source "$SCRIPT_DIR/Tools/Authentication-Access-Control/restrictions_of_the_user_environment.sh"
+source "$SCRIPT_DIR/Tools/Protocole-Network-Access/listen-address-port.sh"
+source "$SCRIPT_DIR/Tools/Protocole-Network-Access/tcp-forwarding.sh"
+source "$SCRIPT_DIR/Tools/Protocole-Network-Access/x11-forwarding.sh"
+source "$SCRIPT_DIR/Tools/OpenSSH-PKI/revocation.sh"
+source "$SCRIPT_DIR/Tools/DNS-Record/dns-record.sh"
 
 function CheckRequirements ()
 {
@@ -47,19 +50,42 @@ function CheckRequirements ()
     fi    
 }
 
+function Backup-SSHFolder ()
+{
+    BACKUP_DIR="/tmp/ssh_backup_$(date +%Y%m%d_%H%M%S)"
+    sudo mkdir -p "$BACKUP_DIR"
+
+    for user_home in /root /home/*; do
+        ssh_dir="$user_home/.ssh"
+        
+        if [ -d "$ssh_dir" ]; then
+            dest="$BACKUP_DIR/$(basename "$user_home")"
+            sudo mkdir -p "$dest"
+            sudo cp -a "$ssh_dir" "$dest/"
+            echo -e "${GREEN}Backup created for SSH configuration to $BACKUP_DIR${NC}"
+        else
+            echo -e "${YELLOW}No .ssh directory for $user_home, skipping${NC}"
+        fi
+    done
+}
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # Aucune couleur
 
 CheckRequirements
+Backup-SSHFolder
 
 PS3="Please select a task ? "
-options=("Configure all tasks" "Configure a specific task" "Quit")
+options=("Audit" "Configure all tasks" "Configure a specific task" "Quit")
 
 select choix in "${options[@]}"; do
     case $REPLY in
         1)
+            ./Audit/audit.sh
+            ;;
+        2)
             Setup-SSHProtocol #R1
             Get-SSHPresence #R2
             Remove-OldProtocols #R3
@@ -82,9 +108,10 @@ select choix in "${options[@]}"; do
             Setup-Allowusers #R22
             Block-EnvironmentModification #R23
 
-            Set-SSHPort #R25
-            Block-TCPForwarding #R26
-            Block-X11Forwarding #R27
+            Set-ManagementIPAddress #R25
+            Set-SSHPort #R26
+            Block-TCPForwarding #R27
+            Block-X11Forwarding #R28
             Block-X11Trusted #R28
 
             Create-RevocationFile #R30
@@ -103,10 +130,10 @@ select choix in "${options[@]}"; do
             Block-RootConnection #P12 & R21
             Set-PrintLastLogon #P13
             ;;
-        2)
+        3)
             ./Menu/detailed_menu.sh
             ;;
-        3)
+        4)
             echo -e "${YELLOW}[Task] : Restart SSH service${NC}"
             sudo systemctl restart sshd
             echo "Exit"

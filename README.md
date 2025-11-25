@@ -40,7 +40,7 @@ All the tasks performed in this script are based on the ANSSI guide, accessible 
     * using the ForceCommand directive on a per user basis in the sshd_config file;
     * specifying some options in the authorized_keys file (See 4.3.1);
     * using secure binaries such as sudo or su
-- [ ] The SSH server shall only listen on the administration network.
+- [x] The SSH server shall only listen on the administration network.
 - [x] When the SSH server is exposed to an uncontrolled network, one should change its listening port (22). Preference should be given to privileged ports (below 1024).
 - [x] Except for duly justified needs, any flow forwarding feature shall be turned off:
     * in the SSH server configuration;

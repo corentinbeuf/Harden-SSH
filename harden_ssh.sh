@@ -86,9 +86,10 @@ select choix in "${options[@]}"; do
             Setup-Allowusers #R22
             Block-EnvironmentModification #R23
 
-            Set-SSHPort #R25
-            Block-TCPForwarding #R26
-            Block-X11Forwarding #R27
+            Set-ManagementIPAddress #R25
+            Set-SSHPort #R26
+            Block-TCPForwarding #R27
+            Block-X11Forwarding #R28
             Block-X11Trusted #R28
 
             Create-RevocationFile #R30

@@ -53,7 +53,7 @@ options=("${CYAN_MENU}R1 - Setup SSH Protocol${NC_MENU}"\
  "${CYAN_MENU}R21 - Disable connection with root user${NC_MENU}"
  "${CYAN_MENU}R22 - Setup users and IP allowed to use SSH${NC_MENU}"\
  "${CYAN_MENU}R23 - Block possibility to change environment by the sshd service${NC_MENU}"\
- "${CYAN_MENU}R24 - ${NC_MENU}"\
+ "${CYAN_MENU}R24 - Define IP of management interface${NC_MENU}"\
  "${CYAN_MENU}R25 - Define new SSH port${NC_MENU}"\
  "${CYAN_MENU}R26 - Disable TCP forwarding${NC_MENU}"\
  "${CYAN_MENU}R27 - Disable X11 forwarding${NC_MENU}"\
@@ -144,6 +144,7 @@ select choice in "${options[@]}"; do
             Block-EnvironmentModification #R23
             ;;
         24)
+            Set-ManagementIPAddress
             ;;
         25)
             Set-SSHPort #R25

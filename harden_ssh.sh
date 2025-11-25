@@ -1,8 +1,7 @@
 #!/bin/bash
 
 chmod +x Menu/detailed_menu.sh
-chmod +x Audit/audit_sshd_config.sh
-chmod +x Audit/audit_ssh_config.sh
+chmod +x Audit/audit.sh
 
 source ./Tools/ssh_protocol.sh
 source ./Tools/remote_shell_administration.sh
@@ -62,6 +61,7 @@ options=("Audit" "Configure all tasks" "Configure a specific task" "Quit")
 select choix in "${options[@]}"; do
     case $REPLY in
         1)
+            ./Audit/audit.sh
             ;;
         2)
             Setup-SSHProtocol #R1

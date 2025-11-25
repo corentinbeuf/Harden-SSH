@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SCRIPT_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
+
 source "$SCRIPT_DIR/Tools/ssh_protocol.sh"
 source "$SCRIPT_DIR/Tools/remote_shell_administration.sh"
 source "$SCRIPT_DIR/Tools/Cryptography/authentication.sh"

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SCRIPT_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
+
 chmod +x "$SCRIPT_DIR/Menu/detailed_menu.sh"
 chmod +x "$SCRIPT_DIR/Audit/audit.sh"
 
@@ -47,8 +49,6 @@ function CheckRequirements ()
         exit 1
     fi    
 }
-
-SCRIPT_DIR=$(dirname "$(realpath "${BASH_SOURCE[0]}")")
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'

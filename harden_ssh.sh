@@ -50,12 +50,32 @@ function CheckRequirements ()
     fi    
 }
 
+function Backup-SSHFolder ()
+{
+    BACKUP_DIR="/tmp/ssh_backup_$(date +%Y%m%d_%H%M%S)"
+    sudo mkdir -p "$BACKUP_DIR"
+
+    for user_home in /root /home/*; do
+        ssh_dir="$user_home/.ssh"
+        
+        if [ -d "$ssh_dir" ]; then
+            dest="$BACKUP_DIR/$(basename "$user_home")"
+            sudo mkdir -p "$dest"
+            sudo cp -a "$ssh_dir" "$dest/"
+            echo -e "${GREEN}Backup created for SSH configuration to $BACKUP_DIR${NC}"
+        else
+            echo -e "${YELLOW}No .ssh directory for $user_home, skipping${NC}"
+        fi
+    done
+}
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 NC='\033[0m' # Aucune couleur
 
 CheckRequirements
+Backup-SSHFolder
 
 PS3="Please select a task ? "
 options=("Audit" "Configure all tasks" "Configure a specific task" "Quit")

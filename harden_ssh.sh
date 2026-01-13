@@ -67,6 +67,18 @@ function Backup-SSHFolder ()
             echo -e "${YELLOW}No .ssh directory for $user_home, skipping${NC}"
         fi
     done
+
+    CONFIG_BACKUP_DIR="/tmp/ssh_config_$(date +%Y%m%d_%H%M%S)"
+    if [ -d "/etc/ssh" ]; then
+        sudo mkdir -p "$CONFIG_BACKUP_DIR"
+        sudo cp -a /etc/ssh/* "$CONFIG_BACKUP_DIR"
+        echo -e "${GREEN}Backup created for SSH configuration to $CONFIG_BACKUP_DIR${NC}"
+    else
+        echo -e "${RED}Impossible to backup /etc/ssh folder${NC}"
+        break
+    fi
+    # sudo mkdir -p "/tmp/ssh_config_$(date +%Y%m%d_%H%M%S)"
+    # sudo cp -r /etc/ssh/* "/tmp/ssh_config_$(date +%Y%m%d_%H%M%S)"
 }
 
 RED='\033[0;31m'

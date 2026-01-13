@@ -84,8 +84,6 @@ function Get-LineInFile() {
     fi
 }
 
-#!/bin/bash
-
 function Check-SSHDHardening() {
     local desc="$1"
     local sshd_bin="/usr/sbin/sshd"
@@ -183,9 +181,9 @@ function Check-KeyLifetime () {
     for dir in $path; do
         if [ -d "$dir" ]; then
             if find "$dir" -type f -mtime +1095 | grep -q .; then
-                Print-Fail "$dir : $desc (missing or incorrect)"
+                Print-Fail "$desc : $dir (missing or incorrect)"
             else
-                Print-Ok "$dir : $desc"
+                Print-Ok "$desc : $dir"
             fi
         fi
     done
@@ -200,9 +198,9 @@ function Get-Permission ()
     for file in $path;
     do
         if [ "$(sudo stat -c "%a" "$file")" -ne $perms ]; then
-            Print-Fail "$file : $desc (missing or incorrect)"
+            Print-Fail "$desc : $file (missing or incorrect)"
         else
-            Print-Ok "$file : $desc"
+            Print-Ok "$desc : $file"
         fi
     done
 }

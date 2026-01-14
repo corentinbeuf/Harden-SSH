@@ -318,6 +318,7 @@ Get-RSAKey "*id_rsa*" "R10 - No RSA key on this server"
 #R12
 Get-Permission "/etc/ssh/ssh_host_rsa_key" "600" "R13 - Permissions on host key file are correct"
 Get-Permission "/etc/ssh/ssh_host_ecdsa_key" "600" "R13 - Permissions on host key file are correct"
+Get-Permission "/etc/ssh/ssh_host_ed25519_key" "600" "R13 - Permissions on host key file are correct"
 Get-SSHdOption "StrictModes" "yes" "R14 - Private keys protected with AES128-CBC mode."
 Get-SSHOption "   Ciphers" "aes128-ctr,aes192-ctr,aes256-ctr" "R15 - Encryption algorithm defined"
 Get-SSHOption "   MACs" "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com" "R15 - Encryption algorithm defined"

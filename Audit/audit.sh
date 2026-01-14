@@ -323,6 +323,7 @@ Get-SSHOption "   ForwardX11Trusted" "no" "R28 - X11 forwarding disabled"
 #R29
 Get-SSHdOption "RevokedKeys" "/etc/ssh/revoked_keys" "R30 - Revoked key file defined"
 Get-File "/etc/ssh/revoked_keys" "R30 - Revoked key file created"
+Get-Permission "/etc/ssh/revoked_keys" "644" "R30 - Permissions on revoked ssh key file are correct"
 Get-SSHOption "VerifyHostKeyDNS" "ask" "R31 - HostKey DNS verification defined"
 
 Check-KeyLifetime "/root/.ssh" "P1 - Root SSH key has less has less than 3 years"

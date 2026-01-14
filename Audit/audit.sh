@@ -215,9 +215,9 @@ function Check-PasswordProtection ()
         [ -f "$key" ] || continue
         [[ "$key" == *.pub ]] && continue
         if ssh-keygen -y -f "$key" >/dev/null 2>&1; then
-            Print-Fail "$key : $desc (missing or incorrect)"
+            Print-Fail "$desc : $key (missing or incorrect)"
         else
-            Print-Ok "$key : $desc"
+            Print-Ok "$desc : $key"
         fi
     done
 }

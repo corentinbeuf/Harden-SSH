@@ -195,14 +195,45 @@ function Get-Permission ()
     local perms="$2"
     local desc="$3"
 
-    for file in $path;
-    do
-        if [ "$(sudo stat -c "%a" "$file")" -ne $perms ]; then
-            Print-Fail "$desc : $file (missing or incorrect)"
+    local found=false
+
+    for file in $path; do
+        # Vérifier si le wildcard n'a pas matché (reste littéral)
+        if [ "$file" = "$path" ] && [[ "$path" == *"*"* ]]; then
+            Print-Fail "$desc : No files matching pattern $path"
+            return 1
+        fi
+        
+        found=true
+        
+        if [ -e "$file" ]; then
+            local current_perms=$(sudo stat -c "%a" "$file" 2>/dev/null)
+            
+            if [ -z "$current_perms" ]; then
+                Print-Fail "$desc : $file (cannot read permissions)"
+            elif [ "$current_perms" != "$perms" ]; then
+                Print-Fail "$desc : $file (has $current_perms, expected $perms)"
+            else
+                Print-Ok "$desc : $file"
+            fi
         else
-            Print-Ok "$desc : $file"
+            Print-Fail "$desc : $file (does not exist)"
         fi
     done
+    
+    if [ "$found" = false ]; then
+        Print-Fail "$desc : $path (no files found)"
+        return 1
+    fi
+
+    # for file in $path;
+    # do
+    #     if [ "$(sudo stat -c "%a" "$file")" -ne $perms ]; then
+    #         Print-Fail "$desc : $file (missing or incorrect)"
+    #     else
+    #         Print-Ok "$desc : $file"
+    #     fi
+    # done
 }
 
 function Check-PasswordProtection ()

@@ -173,9 +173,15 @@ select choix in "${options[@]}"; do
             ;;
         4)
             echo -e "${YELLOW}[Task] : Restart SSH service${NC}"
-            sudo systemctl restart sshd
-            echo "Exit"
-            break
+            if [ "$(lsb_release -si)" = "Ubuntu" ]; then
+                sudo systemctl restart ssh
+                echo "Exit"
+                break
+            else
+                sudo systemctl restart sshd
+                echo "Exit"
+                break
+            fi
             ;;
         *)
             echo -e "${RED} Invalid option, please try again !${NC}"

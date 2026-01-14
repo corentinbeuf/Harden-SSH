@@ -45,11 +45,11 @@ function Setup-RSAKeySize ()
 }
 
 function Check-ECDSAKeySize() {
-    for key in /root/.ssh/id_ecdsa /home/*/.ssh/id_ecdsa; do
+    for key in /root/.ssh/id_ecdsa /home/*/.ssh/id_ecdsa /root/.ssh/id_ed25519 /home/*/.ssh/id_ed25519; do
         [ -f "$key" ] || continue
         key_size=$(ssh-keygen -lf "$key" | awk '{print $1}')
         if (( key_size < 256 )); then
-            echo -e "${RED}[Task R9] : Key $key is too small. Please generate new key with this command : ssh-keygen -t ecdsa -b 256"
+            echo -e "${RED}[Task R9] : Key $key is too small. Please generate new key with this command : ssh-keygen -t ed25519 -b 256"
         else
             echo -e "${YELLOW}[Task R9] : The minimum size of the key '$key' is sufficient"
         fi

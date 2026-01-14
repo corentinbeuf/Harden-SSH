@@ -148,7 +148,7 @@ function Get-DSAKey () {
 function Get-ECDSAKeySize() {
     local desc="$1"
 
-    for key in /root/.ssh/id_ecdsa /home/*/.ssh/id_ecdsa; do
+    for key in /root/.ssh/id_ecdsa /home/*/.ssh/id_ecdsa /root/.ssh/id_ed25519 /home/*/.ssh/id_ed25519; do
         [ -f "$key" ] || continue
         key_size=$(ssh-keygen -lf "$key" | awk '{print $1}')
         if (( key_size < 256 )); then

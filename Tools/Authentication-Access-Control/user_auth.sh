@@ -20,7 +20,7 @@ function Set-UserAuthMechanisms ()
         echo -e "${GREEN}[Task R17] : User authentication should be performed with one of the following mechanisms - Pubkey algorithms.${NC}"
         sudo sed -i '/HostKeyAlgorithms ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,rsa-sha2-512,rsa-sha2-256/a PubkeyAcceptedAlgorithms ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,rsa-sha2-512,rsa-sha2-256' /etc/ssh/sshd_config
     else
-        echo -e "${YELLOW}[Task R15] : Hostkey algorithms are already setup${NC}"
+        echo -e "${YELLOW}[Task R17] : Hostkey algorithms are already setup${NC}"
     fi
 
     if ! grep -Fxq "GSSAPIAuthentication yes" "/etc/ssh/sshd_config"; then

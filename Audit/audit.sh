@@ -200,7 +200,7 @@ function Get-Permission ()
     for file in $path; do
         # Vérifier si le wildcard n'a pas matché (reste littéral)
         if [ "$file" = "$path" ] && [[ "$path" == *"*"* ]]; then
-            Print-Fail "$desc : No files matching pattern $path"
+            Print-Warn "$desc : No files matching pattern $path"
             return 1
         fi
         
@@ -222,7 +222,7 @@ function Get-Permission ()
     done
     
     if [ "$found" = false ]; then
-        Print-Fail "$desc : $path (no files found)"
+        Print-Warn "$desc : $path (no files found)"
         return 1
     fi
 

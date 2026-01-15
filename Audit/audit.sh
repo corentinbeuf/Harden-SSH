@@ -341,6 +341,7 @@ Get-SSHdOption "UsePAM" "yes" "R17 - PAM authentication defined"
 Get-SSHdOption "PasswordAuthentication" "yes" "R17 - Password authentication defined"
 #R18
 Get-SSHdOption "AllowAgentForwarding" "no" "R19 - Agent forwarding disabled"
+Get-SSHOption "ForwardAgent" "no" "R19 - Agent forwarding disabled"
 #R20
 Get-SSHdOption "PermitRootLogin" "no" "R21 - Root login disabled"
 #Get-SSHdOption "AllowUsers" "" "R22 - Allow users defined"

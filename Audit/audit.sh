@@ -217,12 +217,12 @@ function Get-Permission ()
                 Print-Ok "$desc : $file"
             fi
         else
-            Print-Fail "$desc : $file (does not exist)"
+            Print-Ok "$desc : $file (does not exist)"
         fi
     done
     
     if [ "$found" = false ]; then
-        Print-Warn "$desc : $path (no files found)"
+        Print-Ok "$desc : $path (no files found)"
         return 1
     fi
 

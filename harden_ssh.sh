@@ -50,6 +50,25 @@ function CheckRequirements ()
     fi    
 }
 
+function Show-Banner() {
+    clear
+    echo -e "${CYAN}"
+    cat << "EOF"
+    ╦ ╦┌─┐┬─┐┌┬┐┌─┐┌┐┌   ╔═╗╔═╗╦ ╦
+    ╠═╣├─┤├┬┘ ││├┤ │││───╚═╗╚═╗╠═╣
+    ╩ ╩┴ ┴┴└──┴┘└─┘┘└┘   ╚═╝╚═╝╩ ╩
+EOF
+    echo -e "${NC}"
+    echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${YELLOW}  SSH Hardening & Security Configuration${NC}"
+    echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${CYAN}  Version:${NC} ${VERSION}"
+    echo -e "${CYAN}  Author:${NC}  ${AUTHOR}"
+    echo -e "${CYAN}  GitHub:${NC}  ${GITHUB}"
+    echo -e "${GREEN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo ""
+}
+
 function Backup-SSHFolder ()
 {
     BACKUP_DIR="/tmp/ssh_backup_$(date +%Y%m%d_%H%M%S)"
@@ -67,14 +86,33 @@ function Backup-SSHFolder ()
             echo -e "${YELLOW}No .ssh directory for $user_home, skipping${NC}"
         fi
     done
+
+    CONFIG_BACKUP_DIR="/tmp/ssh_config_$(date +%Y%m%d_%H%M%S)"
+    if [ -d "/etc/ssh" ]; then
+        sudo mkdir -p "$CONFIG_BACKUP_DIR"
+        sudo cp -a /etc/ssh/* "$CONFIG_BACKUP_DIR"
+        echo -e "${GREEN}Backup created for SSH configuration to $CONFIG_BACKUP_DIR${NC}"
+    else
+        echo -e "${RED}Impossible to backup /etc/ssh folder${NC}"
+        break
+    fi
+    # sudo mkdir -p "/tmp/ssh_config_$(date +%Y%m%d_%H%M%S)"
+    # sudo cp -r /etc/ssh/* "/tmp/ssh_config_$(date +%Y%m%d_%H%M%S)"
 }
 
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+CYAN='\033[0;36m'
 NC='\033[0m' # Aucune couleur
 
+VERSION="1.2"
+AUTHOR="Corentin Beuf"
+GITHUB="https://github.com/corentinbeuf/Harden-SSH"
+
 CheckRequirements
+Show-Banner
 Backup-SSHFolder
 
 PS3="Please select a task ? "
@@ -135,9 +173,15 @@ select choix in "${options[@]}"; do
             ;;
         4)
             echo -e "${YELLOW}[Task] : Restart SSH service${NC}"
-            sudo systemctl restart sshd
-            echo "Exit"
-            break
+            if [ "$(lsb_release -si)" = "Ubuntu" ]; then
+                sudo systemctl restart ssh
+                echo "Exit"
+                break
+            else
+                sudo systemctl restart sshd
+                echo "Exit"
+                break
+            fi
             ;;
         *)
             echo -e "${RED} Invalid option, please try again !${NC}"

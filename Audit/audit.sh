@@ -84,8 +84,6 @@ function Get-LineInFile() {
     fi
 }
 
-#!/bin/bash
-
 function Check-SSHDHardening() {
     local desc="$1"
     local sshd_bin="/usr/sbin/sshd"
@@ -150,7 +148,7 @@ function Get-DSAKey () {
 function Get-ECDSAKeySize() {
     local desc="$1"
 
-    for key in /root/.ssh/id_ecdsa /home/*/.ssh/id_ecdsa; do
+    for key in /root/.ssh/id_ecdsa /home/*/.ssh/id_ecdsa /root/.ssh/id_ed25519 /home/*/.ssh/id_ed25519; do
         [ -f "$key" ] || continue
         key_size=$(ssh-keygen -lf "$key" | awk '{print $1}')
         if (( key_size < 256 )); then
@@ -183,9 +181,9 @@ function Check-KeyLifetime () {
     for dir in $path; do
         if [ -d "$dir" ]; then
             if find "$dir" -type f -mtime +1095 | grep -q .; then
-                Print-Fail "$dir : $desc (missing or incorrect)"
+                Print-Fail "$desc : $dir (missing or incorrect)"
             else
-                Print-Ok "$dir : $desc"
+                Print-Ok "$desc : $dir"
             fi
         fi
     done
@@ -197,14 +195,45 @@ function Get-Permission ()
     local perms="$2"
     local desc="$3"
 
-    for file in $path;
-    do
-        if [ "$(sudo stat -c "%a" "$file")" -ne $perms ]; then
-            Print-Fail "$file : $desc (missing or incorrect)"
+    local found=false
+
+    for file in $path; do
+        # Vérifier si le wildcard n'a pas matché (reste littéral)
+        if [ "$file" = "$path" ] && [[ "$path" == *"*"* ]]; then
+            Print-Warn "$desc : No files matching pattern $path"
+            return 1
+        fi
+        
+        found=true
+        
+        if [ -e "$file" ]; then
+            local current_perms=$(sudo stat -c "%a" "$file" 2>/dev/null)
+            
+            if [ -z "$current_perms" ]; then
+                Print-Fail "$desc : $file (cannot read permissions)"
+            elif [ "$current_perms" != "$perms" ]; then
+                Print-Fail "$desc : $file (has $current_perms, expected $perms)"
+            else
+                Print-Ok "$desc : $file"
+            fi
         else
-            Print-Ok "$file : $desc"
+            Print-Ok "$desc : $file (does not exist)"
         fi
     done
+    
+    if [ "$found" = false ]; then
+        Print-Ok "$desc : $path (no files found)"
+        return 1
+    fi
+
+    # for file in $path;
+    # do
+    #     if [ "$(sudo stat -c "%a" "$file")" -ne $perms ]; then
+    #         Print-Fail "$desc : $file (missing or incorrect)"
+    #     else
+    #         Print-Ok "$desc : $file"
+    #     fi
+    # done
 }
 
 function Check-PasswordProtection ()
@@ -217,9 +246,9 @@ function Check-PasswordProtection ()
         [ -f "$key" ] || continue
         [[ "$key" == *.pub ]] && continue
         if ssh-keygen -y -f "$key" >/dev/null 2>&1; then
-            Print-Fail "$key : $desc (missing or incorrect)"
+            Print-Fail "$desc : $key (missing or incorrect)"
         else
-            Print-Ok "$key : $desc"
+            Print-Ok "$desc : $key"
         fi
     done
 }
@@ -289,6 +318,7 @@ Get-RSAKey "*id_rsa*" "R10 - No RSA key on this server"
 #R12
 Get-Permission "/etc/ssh/ssh_host_rsa_key" "600" "R13 - Permissions on host key file are correct"
 Get-Permission "/etc/ssh/ssh_host_ecdsa_key" "600" "R13 - Permissions on host key file are correct"
+Get-Permission "/etc/ssh/ssh_host_ed25519_key" "600" "R13 - Permissions on host key file are correct"
 Get-SSHdOption "StrictModes" "yes" "R14 - Private keys protected with AES128-CBC mode."
 Get-SSHOption "   Ciphers" "aes128-ctr,aes192-ctr,aes256-ctr" "R15 - Encryption algorithm defined"
 Get-SSHOption "   MACs" "hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com" "R15 - Encryption algorithm defined"
@@ -311,6 +341,7 @@ Get-SSHdOption "UsePAM" "yes" "R17 - PAM authentication defined"
 Get-SSHdOption "PasswordAuthentication" "yes" "R17 - Password authentication defined"
 #R18
 Get-SSHdOption "AllowAgentForwarding" "no" "R19 - Agent forwarding disabled"
+Get-SSHOption "ForwardAgent" "no" "R19 - Agent forwarding disabled"
 #R20
 Get-SSHdOption "PermitRootLogin" "no" "R21 - Root login disabled"
 #Get-SSHdOption "AllowUsers" "" "R22 - Allow users defined"
@@ -325,6 +356,7 @@ Get-SSHOption "   ForwardX11Trusted" "no" "R28 - X11 forwarding disabled"
 #R29
 Get-SSHdOption "RevokedKeys" "/etc/ssh/revoked_keys" "R30 - Revoked key file defined"
 Get-File "/etc/ssh/revoked_keys" "R30 - Revoked key file created"
+Get-Permission "/etc/ssh/revoked_keys" "644" "R30 - Permissions on revoked ssh key file are correct"
 Get-SSHOption "VerifyHostKeyDNS" "ask" "R31 - HostKey DNS verification defined"
 
 Check-KeyLifetime "/root/.ssh" "P1 - Root SSH key has less has less than 3 years"

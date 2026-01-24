@@ -9,7 +9,7 @@ OK_COUNT=0
 WARN_COUNT=0
 FAIL_COUNT=0
 
-ADMINISTRATIVE_IP="$(hostname -I | awk '{print $2}')"
+ADMINISTRATIVE_IP="$(hostname -I | awk '{print $1}')"
 
 version=$(ssh -V 2>&1 | awk '{print $1}' | cut -d'_' -f2)
 major=$(echo "$version" | cut -d'.' -f1)
@@ -58,7 +58,8 @@ function Get-PackagePresence() {
     local option="$1"
     local desc="$2"
 
-    if dpkg -l | awk '/^ii/ {print $2}' | grep -qi "^${option}$"; then
+    # if dpkg -l | awk '/^ii/ {print $2}' | grep -qi "^${option}$"; then
+    if yum list installed "${option}" &>/dev/null; then
         Print-Ok "$desc"
     else
         Print-Fail "$desc (missing or incorrect). Package missing : $option"
@@ -69,7 +70,8 @@ function Get-PackageIfIsRemoved() {
     local option="$1"
     local desc="$2"
 
-    if dpkg -l | awk '/^ii/ {print $2}' | grep -qi "^${option}"; then
+    # if dpkg -l | awk '/^ii/ {print $2}' | grep -qi "^${option}"; then
+    if yum list installed "${option}" &>/dev/null; then
         Print-Fail "$desc (missing or incorrect), package : $option"
     else
         Print-Ok "$desc"
@@ -202,7 +204,6 @@ function Get-Permission ()
     local found=false
 
     for file in $path; do
-        # Vérifier si le wildcard n'a pas matché (reste littéral)
         if [ "$file" = "$path" ] && [[ "$path" == *"*"* ]]; then
             Print-Warn "$desc : No files matching pattern $path"
             return 1
@@ -229,15 +230,6 @@ function Get-Permission ()
         Print-Ok "$desc : $path (no files found)"
         return 1
     fi
-
-    # for file in $path;
-    # do
-    #     if [ "$(sudo stat -c "%a" "$file")" -ne $perms ]; then
-    #         Print-Fail "$desc : $file (missing or incorrect)"
-    #     else
-    #         Print-Ok "$desc : $file"
-    #     fi
-    # done
 }
 
 function Check-PasswordProtection ()
@@ -290,27 +282,22 @@ function Get-Group() {
     fi
 }
 
+clear
 echo -e "\n===================================="
 echo -e "        🔍 SSH HARDENING AUDIT"
 echo -e "===================================="
 
 Get-SSHdOption "Protocol" "2" "R1 - SSHv2 specified"
 Get-PackagePresence "openssh-server" "R2 - OpenSSH-Server is installed"
-Get-PackageIfIsRemoved "telnetd" "R3 - TELNET, RSH and RLOGIN is uninstalled"
-Get-PackageIfIsRemoved "inetutils-telnetd" "R3 - TELNET, RSH and RLOGIN is uninstalled"
-Get-PackageIfIsRemoved "inetutils-telnet" "R3 - TELNET, RSH and RLOGIN is uninstalled"
+Get-PackageIfIsRemoved "telnet-server" "R3 - TELNET, RSH and RLOGIN is uninstalled"
+Get-PackageIfIsRemoved "telnet" "R3 - TELNET, RSH and RLOGIN is uninstalled"
 Get-PackageIfIsRemoved "rsh-server" "R3 - TELNET, RSH and RLOGIN is uninstalled"
-Get-PackageIfIsRemoved "rsh-client" "R3 - TELNET, RSH and RLOGIN is uninstalled"
-Get-PackageIfIsRemoved "rsh-redone-client" "R3 - TELNET, RSH and RLOGIN is uninstalled"
-Get-PackageIfIsRemoved "rsh-redone-server" "R3 - TELNET, RSH and RLOGIN is uninstalled"
+Get-PackageIfIsRemoved "rsh" "R3 - TELNET, RSH and RLOGIN is uninstalled"
 Get-PackageIfIsRemoved "vsftpd" "R4 - FTP and RCP is uninstalled"
 Get-PackageIfIsRemoved "proftpd" "R4 - FTP and RCP is uninstalled"
 Get-PackageIfIsRemoved "pure-ftpd" "R4 - FTP and RCP is uninstalled"
-Get-PackageIfIsRemoved "inetutils-ftpd" "R4 - FTP and RCP is uninstalled"
-Get-PackageIfIsRemoved "tftpd" "R4 - FTP and RCP is uninstalled"
-Get-PackageIfIsRemoved "inetutils-ftp" "R4 - FTP and RCP is uninstalled"
-Get-PackageIfIsRemoved "rsh-client" "R4 - FTP and RCP is uninstalled"
-Get-PackageIfIsRemoved "rsh-redone-client" "R4 - FTP and RCP is uninstalled"
+Get-PackageIfIsRemoved "tftp-server" "R4 - FTP and RCP is uninstalled"
+Get-PackageIfIsRemoved "ftp" "R4 - FTP and RCP is uninstalled"
 Get-SSHdOption "PermitTunnel" "no" "R5 - SSH tunnel disabled"
 Get-SSHOption "   StrictHostKeyChecking" "ask" "R6 - HostKey checking enabled"
 Get-DSAKey "*id_dsa*" "R7 - Client DSA key removed"
@@ -339,11 +326,11 @@ Get-SSHdOption "HostKeyAlgorithms" "ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,rsa-
 Get-SSHdOption "PubkeyAcceptedAlgorithms" "ecdsa-sha2-nistp256,ecdsa-sha2-nistp384,rsa-sha2-512,rsa-sha2-256" "R17 - Pubkey accepted algorithms defined"
 Get-SSHdOption "GSSAPIAuthentication" "yes" "R17 - GSSAPI authentication defined"
 Get-SSHdOption "GSSAPICleanupCredentials" "yes" "R17 - GSSAPI cleanup credentials defined"
-Get-PackagePresence "krb5-user" "R17 - Package 'krb5-user' is installed"
-if apt list --installed 2>/dev/null | grep -qi libpam-krb5; then
-    Print-Ok "R17 - Package 'libpam-krb5' is installed"
+Get-PackagePresence "krb5-workstation" "R17 - Package 'krb5-workstation' is installed"
+if yum list installed "pam_krb5" &>/dev/null; then
+    Print-Ok "R17 - Package 'pam_krb5' is installed"
 else
-    Print-Fail "R17 - Package 'libpam-krb5' is installed (missing or incorrect)"
+    Print-Fail "R17 - Package 'pam_krb5' is installed (missing or incorrect)"
 fi
 Get-SSHdOption "UsePAM" "yes" "R17 - PAM authentication defined"
 Get-SSHdOption "PasswordAuthentication" "yes" "R17 - Password authentication defined"
@@ -360,7 +347,7 @@ Get-SSHdOption "ListenAddress" "${ADMINISTRATIVE_IP}" "R25 - Administrative addr
 Get-SSHdOption "Port" "26" "R26 - Specific SSH port defined"
 Get-SSHdOption "AllowTcpForwarding" "no" "R27 - TCP forwarding disabled"
 Get-SSHdOption "X11Forwarding" "no" "R28 - X11 forwarding disabled"
-Get-SSHOption "   ForwardX11Trusted" "no" "R28 - X11 forwarding disabled"
+Get-SSHOption "ForwardX11Trusted" "no" "R28 - X11 forwarding disabled"
 #R29
 Get-SSHdOption "RevokedKeys" "/etc/ssh/revoked_keys" "R30 - Revoked key file defined"
 Get-File "/etc/ssh/revoked_keys" "R30 - Revoked key file created"

@@ -107,7 +107,7 @@ BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 NC='\033[0m' # Aucune couleur
 
-VERSION="1.2"
+VERSION="2.0"
 AUTHOR="Corentin Beuf"
 GITHUB="https://github.com/corentinbeuf/Harden-SSH"
 
@@ -178,6 +178,7 @@ select choix in "${options[@]}"; do
                 echo "Exit"
                 break
             else
+                sudo systemctl daemon-reload
                 sudo systemctl restart sshd
                 echo "Exit"
                 break

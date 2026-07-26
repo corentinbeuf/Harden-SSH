@@ -6,7 +6,7 @@ function Setup-PermissionForPrivateKeys ()
 
     for file in "${files[@]}";
     do
-        if [ "$(stat -c "%a" $file)" -ne "600" ]; then
+        if [ "$(sudo stat -c "%a" $file)" -ne "600" ]; then
             echo -e "${GREEN}[Task R13] : The private key should only be known by the entity who needs to prove its identity to a third party and possibly to a trusted authority. This private key should be properly protected in order to avoid its disclosure to any unauthorized person.${NC}"
             sudo chmod 600 "$file"
         else
@@ -21,14 +21,14 @@ function Setup-PermissionForUserPrivateKeys()
 
     for dir in "${dirs[@]}"; do
         [ -d "$dir" ] || continue
-        if [ "$(stat -c "%a" "$dir")" -ne 700 ]; then
+        if [ "$(sudo stat -c "%a" "$dir")" -ne 700 ]; then
             echo -e "${GREEN}[Task P2] : Fixing permissions for directory $dir${NC}"
             sudo chmod 700 "$dir"
         fi
 
         for key in "$dir"/id_*; do
             [ -f "$key" ] || continue
-            if [ "$(stat -c "%a" "$key")" -ne 600 ]; then
+            if [ "$(sudo stat -c "%a" "$key")" -ne 600 ]; then
                 echo -e "${GREEN}[Task P2] : Fixing private key permissions: $key${NC}"
                 sudo chmod 600 "$key"
             fi
@@ -40,7 +40,7 @@ function Setup-PermissionForUserPrivateKeys()
 
 function Setup-ProtectPrivateKeyUsingAESWithCBC ()
 {
-    if ! grep -Fxq "StrictModes yes" "/etc/ssh/sshd_config"; then
+    if ! sudo grep -Fxq "StrictModes yes" "/etc/ssh/sshd_config"; then
         echo -e "${GREEN}[Task R14] : Private keys shall be password protected using AES128-CBC mode.${NC}"
         sudo sed -i "s/#StrictModes yes/StrictModes yes/g" /etc/ssh/sshd_config
     else
@@ -53,7 +53,7 @@ function Check-PasswordProtection ()
     for key in /home/*/.ssh/id_* /root/.ssh/id_*; do
         [ -f "$key" ] || continue
         [[ "$key" == *.pub ]] && continue
-        if ssh-keygen -y -f "$key" >/dev/null 2>&1; then
+        if sudo ssh-keygen -y -f "$key" >/dev/null 2>&1; then
             echo -e "${YELLOW}[Task P3] : Key $key : is protected with password${NC}"
         else
             echo -e "${RED}[Task P3] : Key $key : Please generate new SSH key and setup a password${NC}"

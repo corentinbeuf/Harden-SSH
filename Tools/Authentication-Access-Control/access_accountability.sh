@@ -2,7 +2,7 @@
 
 function Block-RootConnection ()
 {
-    if grep -Eq "^(#)?PermitRootLogin (yes|prohibit-password)" /etc/ssh/sshd_config; then
+    if sudo grep -Eq "^(#)?PermitRootLogin (yes|prohibit-password)" /etc/ssh/sshd_config; then
         echo -e "${GREEN}[Task P12] : Disable the root connection in SSH.${NC}"
         sudo sed -i "s/^#PermitRootLogin prohibit-password/PermitRootLogin no/" /etc/ssh/sshd_config
         sudo sed -i "s/^PermitRootLogin yes/PermitRootLogin no/" /etc/ssh/sshd_config
@@ -13,7 +13,7 @@ function Block-RootConnection ()
 
 function Set-PrintLastLogon ()
 {
-    if ! grep -Fxq "PrintLastLog yes" "/etc/ssh/sshd_config"; then
+    if ! sudo grep -Fxq "PrintLastLog yes" "/etc/ssh/sshd_config"; then
         echo -e "${GREEN}[Task P13] : Display information related to the user’s last login.${NC}"
         sudo sed -i "s/#PrintLastLog yes/PrintLastLog yes/g" /etc/ssh/sshd_config
     else

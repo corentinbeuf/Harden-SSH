@@ -35,7 +35,7 @@ function Get-SSHOption() {
     local expected="$2"
     local desc="$3"
 
-    if grep -Eq "^\s*$option\s+$expected" /etc/ssh/ssh_config; then
+    if sudo grep -Eq "^\s*$option\s+$expected" /etc/ssh/ssh_config; then
         Print-Ok "$desc"
     else
         Print-Fail "$desc (missing or incorrect)"
@@ -47,7 +47,7 @@ function Get-SSHdOption() {
     local expected="$2"
     local desc="$3"
 
-    if grep -Eq "^\s*$option\s+$expected" /etc/ssh/sshd_config; then
+    if sudo grep -Eq "^\s*$option\s+$expected" /etc/ssh/sshd_config; then
         Print-Ok "$desc"
     else
         Print-Fail "$desc (missing or incorrect)"
@@ -58,7 +58,7 @@ function Get-PackagePresence() {
     local option="$1"
     local desc="$2"
 
-    if dpkg -l | awk '/^ii/ {print $2}' | grep -qi "^${option}$"; then
+    if sudo dpkg -l | awk '/^ii/ {print $2}' | grep -qi "^${option}$"; then
         Print-Ok "$desc"
     else
         Print-Fail "$desc (missing or incorrect). Package missing : $option"
@@ -69,7 +69,7 @@ function Get-PackageIfIsRemoved() {
     local option="$1"
     local desc="$2"
 
-    if dpkg -l | awk '/^ii/ {print $2}' | grep -qi "^${option}"; then
+    if sudo dpkg -l | sudo awk '/^ii/ {print $2}' | sudo grep -qi "^${option}"; then
         Print-Fail "$desc (missing or incorrect), package : $option"
     else
         Print-Ok "$desc"
@@ -81,7 +81,7 @@ function Get-LineInFile() {
     local file="$2"
     local desc="$3"
 
-    if grep -Fxq "$option" "$file"; then
+    if sudo grep -Fxq "$option" "$file"; then
         Print-Fail "$desc (missing or incorrect)"
     else
         Print-Ok "$desc"
@@ -94,15 +94,15 @@ function Check-SSHDHardening() {
     ERREUR=0
 
     # PIE
-    if readelf -h "$sshd_bin" | grep -q "Type:.*DYN"; then
+    if sudo readelf -h "$sshd_bin" | sudo grep -q "Type:.*DYN"; then
         ERREUR=0
     else
         ERREUR=1
     fi
 
     # RELRO
-    if readelf -l "$sshd_bin" | grep -q "GNU_RELRO"; then
-        if readelf -d "$sshd_bin" | grep -q "BIND_NOW"; then
+    if sudo readelf -l "$sshd_bin" | sudo grep -q "GNU_RELRO"; then
+        if sudo readelf -d "$sshd_bin" | sudo grep -q "BIND_NOW"; then
             ERREUR=0
         else
             ERREUR=1
@@ -112,8 +112,8 @@ function Check-SSHDHardening() {
     fi
 
     # NX / No Exec Stack
-    if readelf -W -S "$sshd_bin" | grep -q "GNU_STACK"; then
-        if readelf -W -S "$sshd_bin" | grep -q "GNU_STACK.*RWE"; then
+    if sudo readelf -W -S "$sshd_bin" | sudo grep -q "GNU_STACK"; then
+        if sudo readelf -W -S "$sshd_bin" | sudo grep -q "GNU_STACK.*RWE"; then
             ERREUR=1
         else
             ERREUR=0
@@ -121,7 +121,7 @@ function Check-SSHDHardening() {
     fi
 
     # Stack protector
-    if objdump -d "$sshd_bin" | grep -q "__stack_chk_fail"; then
+    if sudo objdump -d "$sshd_bin" | sudo grep -q "__stack_chk_fail"; then
         ERREUR=0
     else
         ERREUR=1
@@ -138,7 +138,7 @@ function Get-DSAKey () {
     local pattern="$1"
     local desc="$2"
     local results
-    results=$(find / -type f -name "$pattern" 2>/dev/null)
+    results=$(sudo find / -type f -name "$pattern" 2>/dev/null)
 
     if [ -n "$results" ]; then
         while IFS= read -r file; do
@@ -154,7 +154,7 @@ function Get-ECDSAKeySize() {
 
     for key in /root/.ssh/id_ecdsa /home/*/.ssh/id_ecdsa /root/.ssh/id_ed25519 /home/*/.ssh/id_ed25519; do
         [ -f "$key" ] || continue
-        key_size=$(ssh-keygen -lf "$key" | awk '{print $1}')
+        key_size=$(sudo ssh-keygen -lf "$key" | sudo awk '{print $1}')
         if (( key_size < 256 )); then
             Print-Fail "$key : $desc (missing or incorrect)"
         else
@@ -167,7 +167,7 @@ function Get-RSAKey () {
     local pattern="$1"
     local desc="$2"
     local results
-    results=$(find / -type f -name "$pattern" 2>/dev/null)
+    results=$(sudo find / -type f -name "$pattern" 2>/dev/null)
 
     if [ -n "$results" ]; then
         while IFS= read -r file; do
@@ -184,7 +184,7 @@ function Check-KeyLifetime () {
 
     for dir in $path; do
         if [ -d "$dir" ]; then
-            if find "$dir" -type f -mtime +1095 | grep -q .; then
+            if sudo find "$dir" -type f -mtime +1095 | sudo grep -q .; then
                 Print-Fail "$desc : $dir (missing or incorrect)"
             else
                 Print-Ok "$desc : $dir"
@@ -249,7 +249,7 @@ function Check-PasswordProtection ()
     for key in "${files[@]}"; do
         [ -f "$key" ] || continue
         [[ "$key" == *.pub ]] && continue
-        if ssh-keygen -y -f "$key" >/dev/null 2>&1; then
+        if sudo ssh-keygen -y -f "$key" >/dev/null 2>&1; then
             Print-Fail "$desc : $key (missing or incorrect)"
         else
             Print-Ok "$desc : $key"
@@ -283,7 +283,7 @@ function Get-Group() {
     local option="$1"
     local desc="$2"
 
-    if getent group "$option" &>/dev/null; then
+    if sudo getent group "$option" &>/dev/null; then
         Print-Ok "$desc"
     else
         Print-Fail "$desc (missing or incorrect)"
@@ -340,7 +340,7 @@ Get-SSHdOption "PubkeyAcceptedAlgorithms" "ecdsa-sha2-nistp256,ecdsa-sha2-nistp3
 Get-SSHdOption "GSSAPIAuthentication" "yes" "R17 - GSSAPI authentication defined"
 Get-SSHdOption "GSSAPICleanupCredentials" "yes" "R17 - GSSAPI cleanup credentials defined"
 Get-PackagePresence "krb5-user" "R17 - Package 'krb5-user' is installed"
-if apt list --installed 2>/dev/null | grep -qi libpam-krb5; then
+if sudo apt list --installed 2>/dev/null | sudo grep -qi libpam-krb5; then
     Print-Ok "R17 - Package 'libpam-krb5' is installed"
 else
     Print-Fail "R17 - Package 'libpam-krb5' is installed (missing or incorrect)"

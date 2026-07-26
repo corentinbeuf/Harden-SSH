@@ -2,8 +2,8 @@
 
 function Remove-AllDSAKey ()
 {
-    dsa_client_files=$(find / -type f -name "*id_dsa*" -print 2>/dev/null);
-    dsa_server_files=$(find / -type f -name "*ssh_host_dsa_key*" -print 2>/dev/null);
+    dsa_client_files=$(sudo find / -type f -name "*id_dsa*" -print 2>/dev/null);
+    dsa_server_files=$(sudo find / -type f -name "*ssh_host_dsa_key*" -print 2>/dev/null);
 
     #Client files
     if [ -n "$dsa_client_files" ]; then
@@ -33,7 +33,7 @@ function Setup-RSAKeySize ()
     minor=$(echo "$version" | cut -d'.' -f2 | sed 's/[^0-9].*//')
 
     if (( major > 9 || (major == 9 && minor >= 1) )); then
-        if ! grep -Fxq "RequiredRSASize 2048" "/etc/ssh/sshd_config"; then
+        if ! sudo grep -Fxq "RequiredRSASize 2048" "/etc/ssh/sshd_config"; then
             echo -e "${GREEN}[Task R8] : The minimum key size shall be 2048 bits for RSA.${NC}"
             sudo sed -i '/#HostKey \/etc\/ssh\/ssh_host_rsa_key/i RequiredRSASize 2048' /etc/ssh/sshd_config
         else
@@ -47,7 +47,7 @@ function Setup-RSAKeySize ()
 function Check-ECDSAKeySize() {
     for key in /root/.ssh/id_ecdsa /home/*/.ssh/id_ecdsa /root/.ssh/id_ed25519 /home/*/.ssh/id_ed25519; do
         [ -f "$key" ] || continue
-        key_size=$(ssh-keygen -lf "$key" | awk '{print $1}')
+        key_size=$(sudo ssh-keygen -lf "$key" | sudo awk '{print $1}')
         if (( key_size < 256 )); then
             echo -e "${RED}[Task R9] : Key $key is too small. Please generate new key with this command : ssh-keygen -t ed25519 -b 256"
         else
@@ -60,7 +60,7 @@ function Check-KeyLifetime ()
 {
     for dir in /root/.ssh /home/*/.ssh; do
         if [ -d "$dir" ]; then
-            if find "$dir" -type f -mtime +1095 | grep -q .; then
+            if sudo find "$dir" -type f -mtime +1095 | sudo grep -q .; then
                 echo "${YELLOW}SSH key are more than 3 years : $dir ${NC}"
             else
                 echo -e "${YELLOW}[Task P1] : Your SSH keys has less than 3 years${NC}"
@@ -71,7 +71,7 @@ function Check-KeyLifetime ()
 
 function Check-RSAKeyPresence ()
 {
-    rsa_files=$(find / -type f -name "*id_rsa*" -print 2>/dev/null);
+    rsa_files=$(sudo find / -type f -name "*id_rsa*" -print 2>/dev/null);
 
     #Client files
     if [ -n "$rsa_files" ]; then

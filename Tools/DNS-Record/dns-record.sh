@@ -2,7 +2,7 @@
 
 function Setup-DNSValidation ()
 {
-    if ! grep -Fxq "VerifyHostKeyDNS ask" "/etc/ssh/ssh_config"; then
+    if ! sudo grep -Fxq "VerifyHostKeyDNS ask" "/etc/ssh/ssh_config"; then
         echo -e "${GREEN}[Task R31] : SSH host key fingerprints obtained through DNS records should not be trusted without complimentary verifications.${NC}"
         sudo sed -i '/    GSSAPIAuthentication yes/a VerifyHostKeyDNS ask' /etc/ssh/ssh_config
     else

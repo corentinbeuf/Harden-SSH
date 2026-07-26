@@ -27,14 +27,14 @@ source "$SCRIPT_DIR/Tools/DNS-Record/dns-record.sh"
 
 function CheckRequirements ()
 {
-    if [ "$(lsb_release -si)" = "Debian" ] || [ "$(lsb_release -si)" = "Ubuntu" ]; then
+    if [ "$(sudo lsb_release -si)" = "Debian" ] || [ "$(sudo lsb_release -si)" = "Ubuntu" ]; then
         echo -e ""
     else
         echo -e "${RED} This script is created to run only on Debian or Ubuntu !${NC}"
         exit 1
     fi
 
-    if ! apt list --installed sudo &>/dev/null; then
+    if ! sudo apt list --installed sudo &>/dev/null; then
         echo -e "${RED} Sudo is not installed on the server, please install it !${NC}"
         exit 1
     fi

@@ -2,14 +2,14 @@
 
 function Setup-AuthentificationAgent ()
 {
-    if ! grep -Fxq "AllowAgentForwarding no" "/etc/ssh/sshd_config"; then
+    if ! sudo grep -Fxq "AllowAgentForwarding no" "/etc/ssh/sshd_config"; then
         echo -e "${GREEN}[Task R19] : When SSH bouncing is necessary through a relay host, Agent Forwarding (-A option of ssh) should be used - Agent Forwarding.${NC}"
         sudo sed -i "s/#AllowAgentForwarding yes/AllowAgentForwarding no/g" /etc/ssh/sshd_config
     else
         echo -e "${YELLOW}[Task R19] : Agent auth are already disabled${NC}"
     fi
 
-    if ! grep -Fxq "ForwardAgent no" "/etc/ssh/ssh_config"; then
+    if ! sudo grep -Fxq "ForwardAgent no" "/etc/ssh/ssh_config"; then
         echo -e "${GREEN}[Task R19] : When SSH bouncing is necessary through a relay host, Agent Forwarding (-A option of ssh) should be used - Forward Agent.${NC}"
         sudo sed -i "s/#   ForwardAgent no/   ForwardAgent no/g" /etc/ssh/ssh_config
     else

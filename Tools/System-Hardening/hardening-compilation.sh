@@ -4,20 +4,20 @@ function Check-SSHDHardening() {
     local sshd_bin="/usr/sbin/sshd"
     ERREUR=0
 
-    if ! apt-get list --installed binutils &>/dev/null; then
+    if ! sudo apt-get list --installed binutils &>/dev/null; then
         sudo apt-get install binutils -y &>/dev/null
     fi
 
     # PIE
-    if readelf -h "$sshd_bin" | grep -q "Type:.*DYN"; then
+    if sudo readelf -h "$sshd_bin" | sudo grep -q "Type:.*DYN"; then
         ERREUR=0
     else
         ERREUR=1
     fi
 
     # RELRO
-    if readelf -l "$sshd_bin" | grep -q "GNU_RELRO"; then
-        if readelf -d "$sshd_bin" | grep -q "BIND_NOW"; then
+    if sudo readelf -l "$sshd_bin" | sudo grep -q "GNU_RELRO"; then
+        if sudo readelf -d "$sshd_bin" | sudo grep -q "BIND_NOW"; then
             ERREUR=0
         else
             ERREUR=1
@@ -27,8 +27,8 @@ function Check-SSHDHardening() {
     fi
 
     # NX / No Exec Stack
-    if readelf -W -S "$sshd_bin" | grep -q "GNU_STACK"; then
-        if readelf -W -S "$sshd_bin" | grep -q "GNU_STACK.*RWE"; then
+    if sudo readelf -W -S "$sshd_bin" | sudo grep -q "GNU_STACK"; then
+        if sudo readelf -W -S "$sshd_bin" | sudo grep -q "GNU_STACK.*RWE"; then
             ERREUR=1
         else
             ERREUR=0
@@ -36,7 +36,7 @@ function Check-SSHDHardening() {
     fi
 
     # Stack protector
-    if objdump -d "$sshd_bin" | grep -q "__stack_chk_fail"; then
+    if sudo objdump -d "$sshd_bin" | sudo grep -q "__stack_chk_fail"; then
         ERREUR=0
     else
         ERREUR=1

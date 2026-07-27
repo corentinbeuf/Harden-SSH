@@ -70,6 +70,20 @@ Each CA private key shall be protected by a unique and robust password.
 - [X] Display information related to the user’s last login.
 - [ ] Enable 2FA on SSH connection.
 
+## Installation guide
+- Clone the project.
+```bash
+git clone https://github.com/corentinbeuf/Harden-SSH.git
+```
+- Go the folder.
+```bash
+cd Harden-SSH/
+```
+- Execute the script "**harden_ssh.sh**".
+```bash
+bash harden_ssh.sh
+```
+
 ## Documentation : 
 
 A documentation is available to understand each parameter needed to secure the SSH service on your server. This documentation is available with this two files :

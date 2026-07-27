@@ -94,7 +94,7 @@ function Backup-SSHFolder ()
         echo -e "${GREEN}Backup created for SSH configuration to $CONFIG_BACKUP_DIR${NC}"
     else
         echo -e "${RED}Impossible to backup /etc/ssh folder${NC}"
-        break
+        return 1
     fi
     # sudo mkdir -p "/tmp/ssh_config_$(date +%Y%m%d_%H%M%S)"
     # sudo cp -r /etc/ssh/* "/tmp/ssh_config_$(date +%Y%m%d_%H%M%S)"

@@ -49,7 +49,7 @@ All the tasks performed in this script are based on the ANSSI guide, accessible 
 - [ ] It is recommended to create distinct CAs when their roles differ. There will be, for example:
     * one CA for the “hosts” CA role;
     * one CA for the “users” CA role.
-  
+
 Each CA private key shall be protected by a unique and robust password.
 - [x] If a key cannot be considered safe anymore, it shall be quickly revoked at the SSH level.
 - [x] SSH host key fingerprints obtained through DNS records should not be trusted without complimentary verifications.
@@ -70,6 +70,8 @@ Each CA private key shall be protected by a unique and robust password.
 - [X] Display information related to the user’s last login.
 - [ ] Enable 2FA on SSH connection.
 
-## Implementation : 
+## Documentation : 
 
-By default, specific configurations (SFTP, SSH relay ...) are not taken into account in the main script. If you want to implement them, the steps are available on this [file](./DOCUMENTATION.md).
+A documentation is available to understand each parameter needed to secure the SSH service on your server. This documentation is available with this two files :
+- [Markdown](./Docs/DOCUMENTATION.md)
+- [PDF](./Docs/DOCUMENTATION_Harden-SSH.pdf)
